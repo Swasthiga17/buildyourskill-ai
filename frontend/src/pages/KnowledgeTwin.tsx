@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Network,
@@ -23,10 +23,23 @@ import { apiService } from '../services/api';
 
 export const KnowledgeTwin: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'skill_intel' | 'evolution' | 'benchmark' | 'graph' | 'insights'>('overview');
+  const [twinData, setTwinData] = useState<any>(null);
 
   // Evidence Drawer State
   const [showEvidenceDrawer, setShowEvidenceDrawer] = useState(false);
   const [selectedSkillName, setSelectedSkillName] = useState('Machine Learning');
+
+  useEffect(() => {
+    async function loadTwin() {
+      try {
+        const data = await apiService.getKnowledgeTwin();
+        if (data) setTwinData(data);
+      } catch (e) {
+        console.warn('Failed to load twin', e);
+      }
+    }
+    loadTwin();
+  }, []);
 
   return (
     <div className="space-y-8 select-none text-slate-900">

@@ -1,85 +1,127 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from typing import List, Optional
-from datetime import datetime
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+from typing import Dict, Any, Optional
+from app.db.session import get_db
+from app.db.models import User, LearningProgress, LearningTopic
+from app.core.security import get_current_user
+from app.services.roadmap_engine import roadmap_engine
+from app.services.knowledge_twin import knowledge_twin_service
+from app.schemas.schemas import RoadmapResponse, PersonalizeRoadmapRequest
 
 router = APIRouter(prefix="/api/roadmap", tags=["roadmap"])
 
-# In-memory mock DB state for rapid local testing with PostgreSQL fallback
-_db_progress = {
-    "user_knowledge_score": 72.0,
-    "overall_roadmap_progress": 32.0,
-    "completed_stages": [1],
-    "python_topics": {
-        "Python Basics": {"completed": True, "score": 100},
-        "Functions": {"completed": True, "score": 100},
-        "OOP (Object-Oriented Programming)": {"completed": False, "score": 70},
-        "Exception Handling": {"completed": True, "score": 100},
-        "APIs (FastAPI / REST)": {"completed": False, "score": 40},
-        "Git & GitHub": {"completed": True, "score": 100},
-        "DSA (Data Structures)": {"completed": True, "score": 100},
-        "Testing & pytest": {"completed": False, "score": 20}
-    }
-}
+@router.get("/", response_model=RoadmapResponse)
+async def get_roadmap(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    data = await roadmap_engine.get_adaptive_roadmap(db, current_user.id)
+    if not data:
+        raise HTTPException(status_code=404, detail="Roadmap not found.")
+    return data
 
-class ProgressUpdateRequest(BaseModel):
-    stage_id: str
-    topic_name: str
-    score: float
+@router.post("/personalize")
+async def personalize_roadmap(
+    req: PersonalizeRoadmapRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    if req.existing_skills:
+        for skill_code, score in req.existing_skills.items():
+            await knowledge_twin_service.record_evidence(
+                db=db,
+                user_id=current_user.id,
+                skill_code=skill_code.lower(),
+                evidence_type="assessment",
+                title=f"Onboarding Diagnostic: {skill_code}",
+                detail=f"Self-assessed / tested mastery score: {score}%",
+                score=score,
+                confidence="high"
+            )
 
-class AssessmentSubmissionRequest(BaseModel):
-    stage_id: str
-    score: float
+    roadmap_data = await roadmap_engine.get_adaptive_roadmap(db, current_user.id, target_role=req.target_role)
+    
+    python_skipped = any(s["stage_code"] == "01" and s["status"] == "skipped" for s in roadmap_data["steps"])
+    unlocked_ids = [s["id"] for s in roadmap_data["steps"] if s["status"] in ["unlocked", "active", "completed", "skipped"]]
+    completed_ids = [s["id"] for s in roadmap_data["steps"] if s["status"] in ["completed", "skipped"]]
 
-@router.get("/")
-async def get_roadmap():
     return {
-        "overall_progress": _db_progress["overall_roadmap_progress"],
-        "knowledge_score": _db_progress["user_knowledge_score"],
-        "completed_stages_count": len(_db_progress["completed_stages"]),
-        "recommendation": "Based on your 80% Python score, focus today on FastAPI API integration and PyTorch Tensors."
-    }
-
-@router.get("/{stage_id}")
-async def get_stage_details(stage_id: str):
-    if stage_id.lower() == "python":
-        return {
-            "stage_code": "01",
-            "title": "Python & Programming",
-            "overall_score": 80.0,
-            "topics": _db_progress["python_topics"],
-            "project": "Build an ML Data Processing API using FastAPI"
-        }
-    return {
-        "stage_code": "02",
-        "title": stage_id.capitalize(),
-        "overall_score": 60.0,
-        "topics": {},
-        "project": "Standard Stage Project"
+        "status": "success",
+        "target_role": req.target_role,
+        "python_skipped": python_skipped,
+        "active_focus": roadmap_data.get("active_stage", "03 Machine Learning & PyTorch"),
+        "recommendation": roadmap_data.get("recommendation", "Progress through unlocked milestones."),
+        "unlocked_stage_ids": unlocked_ids,
+        "completed_stage_ids": completed_ids,
+        "roadmap": roadmap_data
     }
 
 @router.post("/progress")
-async def update_progress(req: ProgressUpdateRequest):
-    if req.stage_id.lower() == "python" and req.topic_name in _db_progress["python_topics"]:
-        _db_progress["python_topics"][req.topic_name] = {
-            "completed": req.score >= 90,
-            "score": req.score
-        }
-        
+async def mark_topic_progress(
+    req: Dict[str, Any],
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    stage_id = str(req.get("stage_id", "01"))
+    topic_name = str(req.get("topic_name", ""))
+    score = float(req.get("score", 100.0))
+
+    # Record evidence in knowledge twin
+    skill_code_map = {
+        "01": "python", "02": "math", "03": "ml", "04": "pytorch",
+        "05": "transformers", "06": "nlp_cv", "07": "llm", "08": "rag",
+        "09": "agents", "10": "mlops", "11": "system_design"
+    }
+    target_skill = skill_code_map.get(stage_id, "python")
+
+    await knowledge_twin_service.record_evidence(
+        db=db,
+        user_id=current_user.id,
+        skill_code=target_skill,
+        evidence_type="quiz",
+        title=f"Completed Topic: {topic_name}",
+        detail=f"Scored {score}% on topic checkpoint.",
+        score=score,
+        confidence="medium"
+    )
+
+    twin = await knowledge_twin_service.get_user_twin(db, current_user.id)
     return {
         "status": "success",
-        "message": f"Updated progress for {req.topic_name} to {req.score}%",
-        "new_knowledge_score": _db_progress["user_knowledge_score"]
+        "message": f"Updated progress for {topic_name}",
+        "new_knowledge_score": twin["knowledge_score"]
     }
 
 @router.post("/assessment")
-async def submit_assessment(req: AssessmentSubmissionRequest):
-    # Dynamically update Knowledge Twin score
-    boost = (req.score / 100.0) * 5.0
-    _db_progress["user_knowledge_score"] = min(100.0, _db_progress["user_knowledge_score"] + boost)
-    
+async def submit_stage_assessment(
+    req: Dict[str, Any],
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    stage_id = str(req.get("stage_id", "01"))
+    score = float(req.get("score", 85.0))
+
+    skill_code_map = {
+        "01": "python", "02": "math", "03": "ml", "04": "pytorch",
+        "05": "transformers", "06": "nlp_cv", "07": "llm", "08": "rag",
+        "09": "agents", "10": "mlops", "11": "system_design"
+    }
+    target_skill = skill_code_map.get(stage_id, "python")
+
+    await knowledge_twin_service.record_evidence(
+        db=db,
+        user_id=current_user.id,
+        skill_code=target_skill,
+        evidence_type="assessment",
+        title=f"Stage {stage_id} Mastery Assessment",
+        detail=f"Completed comprehensive stage diagnostic with score {score}%.",
+        score=score,
+        confidence="high"
+    )
+
+    twin = await knowledge_twin_service.get_user_twin(db, current_user.id)
     return {
         "status": "success",
-        "submitted_score": req.score,
-        "updated_knowledge_score": round(_db_progress["user_knowledge_score"], 1)
+        "submitted_score": score,
+        "updated_knowledge_score": twin["knowledge_score"]
     }

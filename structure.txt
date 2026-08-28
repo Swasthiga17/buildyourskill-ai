@@ -1,0 +1,81 @@
+buildyourskill ai
++-- .gitignore
++-- README.md
++-- backend
+|   +-- app
+|   |   +-- api
+|   |   |   +-- personalization.py
+|   |   |   \-- roadmap.py
+|   |   +-- db
+|   |   |   +-- models.py
+|   |   |   \-- session.py
+|   |   \-- main.py
+|   \-- requirements.txt
++-- docker-compose.yml
++-- frontend
+|   +-- index.html
+|   +-- package-lock.json
+|   +-- package.json
+|   +-- postcss.config.js
+|   +-- src
+|   |   +-- App.tsx
+|   |   +-- components
+|   |   |   +-- AppLayout.tsx
+|   |   |   +-- Footer.tsx
+|   |   |   +-- KnowledgeGraphCanvas.tsx
+|   |   |   +-- Navbar.tsx
+|   |   |   +-- RoadmapNodeGraph.tsx
+|   |   |   +-- ScoreGauge.tsx
+|   |   |   +-- Sidebar.tsx
+|   |   |   +-- SkillDetailModal.tsx
+|   |   |   +-- SplashScreen.tsx
+|   |   |   \-- StageLearningView.tsx
+|   |   +-- data
+|   |   |   \-- mockData.ts
+|   |   +-- index.css
+|   |   +-- main.tsx
+|   |   +-- pages
+|   |   |   +-- AssessmentsCenter.tsx
+|   |   |   +-- CareerDashboard.tsx
+|   |   |   +-- DesignSystemPage.tsx
+|   |   |   +-- GitHubIntelligence.tsx
+|   |   |   +-- ImportKnowledge.tsx
+|   |   |   +-- InterviewReadiness.tsx
+|   |   |   +-- KnowledgeTwin.tsx
+|   |   |   +-- LandingPage.tsx
+|   |   |   +-- LearnFromAnythingPage.tsx
+|   |   |   +-- LearningRoadmap.tsx
+|   |   |   +-- LoginPage.tsx
+|   |   |   +-- MainDashboard.tsx
+|   |   |   +-- MentorChat.tsx
+|   |   |   +-- ProgressAnalytics.tsx
+|   |   |   +-- ProjectGenerator.tsx
+|   |   |   +-- PrototypeFlowPage.tsx
+|   |   |   +-- SettingsPage.tsx
+|   |   |   +-- SkillGaps.tsx
+|   |   |   +-- TodayPlan.tsx
+|   |   |   +-- roadmap
+|   |   |   |   +-- RoadmapHome.tsx
+|   |   |   |   +-- StageAgentsPage.tsx
+|   |   |   |   +-- StageCareerPage.tsx
+|   |   |   |   +-- StageDLPage.tsx
+|   |   |   |   +-- StageLLMPage.tsx
+|   |   |   |   +-- StageMLOpsPage.tsx
+|   |   |   |   +-- StageMLPage.tsx
+|   |   |   |   +-- StageMathPage.tsx
+|   |   |   |   +-- StageNLPCVPage.tsx
+|   |   |   |   +-- StagePythonPage.tsx
+|   |   |   |   +-- StageRAGPage.tsx
+|   |   |   |   +-- StageSystemDesignPage.tsx
+|   |   |   |   \-- StageTransformersPage.tsx
+|   |   |   \-- study
+|   |   |       +-- StageNotesView.tsx
+|   |   |       \-- StudyHub.tsx
+|   |   +-- services
+|   |   |   \-- api.ts
+|   |   \-- types
+|   |       \-- index.ts
+|   +-- tailwind.config.js
+|   +-- tsconfig.json
+|   \-- vite.config.ts
+\-- test_check.txt

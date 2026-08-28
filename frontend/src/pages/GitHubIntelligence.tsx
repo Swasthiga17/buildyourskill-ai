@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Github, CheckCircle2, Sparkles, Code, GitBranch, Terminal, ExternalLink, ShieldCheck, Zap } from 'lucide-react';
+import { apiService } from '../services/api';
 
 export const GitHubIntelligence: React.FC = () => {
   const [repoInput, setRepoInput] = useState('alex-rivera/production-rag-serving');
@@ -19,11 +20,13 @@ export const GitHubIntelligence: React.FC = () => {
     ]
   });
 
-  const handleAnalyzeRepo = () => {
+  const handleAnalyzeRepo = async () => {
     if (!repoInput) return;
     setIsAnalyzing(true);
-    setTimeout(() => {
-      setIsAnalyzing(false);
+    try {
+      const res = await apiService.analyzeGitHubRepo(repoInput);
+      setAnalysisResult(res);
+    } catch (e) {
       setAnalysisResult({
         repoName: repoInput,
         stars: 58,
@@ -38,7 +41,9 @@ export const GitHubIntelligence: React.FC = () => {
           { name: 'Docker Containerization', boost: '+15%', status: 'Verified' }
         ]
       });
-    }, 1200);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (

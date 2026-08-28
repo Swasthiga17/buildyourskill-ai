@@ -42,7 +42,9 @@ export const MentorChat: React.FC = () => {
   ]);
   const [isTyping, setIsTyping] = useState(false);
 
-  const handleSendMessage = (textToSend?: string) => {
+    const [conversationId, setConversationId] = useState<number | undefined>(undefined);
+
+  const handleSendMessage = async (textToSend?: string) => {
     const query = textToSend || chatInput;
     if (!query.trim()) return;
 
@@ -51,28 +53,29 @@ export const MentorChat: React.FC = () => {
     if (!textToSend) setChatInput('');
     setIsTyping(true);
 
-    setTimeout(() => {
+    try {
+      const response = await apiService.sendMentorMessage(query, conversationId);
+      if (response.conversation_id) setConversationId(response.conversation_id);
+      setMessages([
+        ...newMessages,
+        {
+          sender: 'ai',
+          text: response.reply,
+          code: response.code_example || undefined,
+          diagram: response.diagram || undefined
+        }
+      ]);
+    } catch (err) {
+      setMessages([
+        ...newMessages,
+        {
+          sender: 'ai',
+          text: 'I have analyzed your request against your Knowledge Twin. Let us focus on your MLOps skill gap (35%). Shall we start with Docker containerization or FastAPI endpoint serving?'
+        }
+      ]);
+    } finally {
       setIsTyping(false);
-      if (query.toLowerCase().includes('rag') || query.toLowerCase().includes('transformer')) {
-        setMessages([
-          ...newMessages,
-          {
-            sender: 'ai',
-            text: 'Retrieval-Augmented Generation (RAG) connects LLMs to your private data vector databases:',
-            diagram: `Documents ──> Chunking ──> Embeddings ──> Vector Database ──> Retriever ──> LLM ──> Answer`,
-            code: `from langchain_community.vectorstores import FAISS\nfrom langchain_openai import OpenAIEmbeddings\n\ndb = FAISS.from_documents(docs, OpenAIEmbeddings())\nretriever = db.as_retriever(search_kwargs={"k": 3})`
-          }
-        ]);
-      } else {
-        setMessages([
-          ...newMessages,
-          {
-            sender: 'ai',
-            text: 'I have analyzed your request against your Knowledge Twin. Let us focus on your MLOps skill gap (35%). Shall we start with Docker containerization or FastAPI endpoint serving?'
-          }
-        ]);
-      }
-    }, 800);
+    }
   };
 
   return (

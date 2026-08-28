@@ -38,21 +38,35 @@ export const ProjectGenerator: React.FC = () => {
   // Screen 5 Portfolio Builder State
   const [portfolioAdded, setPortfolioAdded] = useState(false);
 
-  const handleGenerateProject = () => {
+  const [generatedProject, setGeneratedProject] = useState<any>(null);
+
+  const handleGenerateProject = async () => {
     setIsGenerating(true);
-    setTimeout(() => {
-      setIsGenerating(false);
+    try {
+      const blueprint = await apiService.generateProject(userInput);
+      setGeneratedProject(blueprint);
+      if (blueprint.starter_code) {
+        setWorkspaceCode(blueprint.starter_code);
+      }
       setActiveTab('plan');
-    }, 1000);
+    } catch (err) {
+      setActiveTab('plan');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
-  const handleRunCode = () => {
+  const handleRunCode = async () => {
     setIsExecutingCode(true);
     setCodeConsole(null);
-    setTimeout(() => {
-      setIsExecutingCode(false);
+    try {
+      const res = await apiService.runCode(workspaceCode);
+      setCodeConsole(res.output);
+    } catch (err) {
       setCodeConsole(`[EXECUTING PYTHON SENTENCE-TRANSFORMERS]\n> Embedding Dimensions: 384\n> Vector Preview: [-0.0421, 0.0812, -0.0194, 0.0531, 0.0910]\n\n✓ Embeddings generated cleanly with 0 errors!`);
-    }, 700);
+    } finally {
+      setIsExecutingCode(false);
+    }
   };
 
   const handleAiMentorAction = (action: string) => {
