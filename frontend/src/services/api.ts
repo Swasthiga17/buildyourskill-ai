@@ -380,5 +380,99 @@ export const apiService = {
       console.warn('Today plan API unavailable', e);
     }
     return null;
+  },
+
+  // --- PRIVATE BETA & ONBOARDING ---
+  async validateInvite(invite_code: string): Promise<{ valid: boolean; cohort: string; remaining_uses: number; reason: string }> {
+    const res = await fetch(`${API_BASE_URL}/api/beta/validate-invite`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ invite_code })
+    });
+    if (!res.ok) throw new Error('Invite validation failed');
+    return await res.json();
+  },
+
+  async getBetaStatus(): Promise<any> {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/beta/status`, {
+        headers: getAuthHeaders()
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {
+      console.warn('Beta status endpoint unavailable', e);
+    }
+    return { is_beta_user: false, onboarding_completed: true };
+  },
+
+  async getOnboardingGuide(): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/api/beta/onboarding`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error('Failed to load onboarding guide');
+    return await res.json();
+  },
+
+  async completeOnboardingStep(step_number: number, mark_all_done = false): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/api/beta/onboarding/complete-step`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ step_number, mark_all_done })
+    });
+    if (!res.ok) throw new Error('Failed to complete onboarding step');
+    return await res.json();
+  },
+
+  // --- FEEDBACK ---
+  async submitFeedback(
+    feature: string,
+    rating: number,
+    feedback_text: string,
+    entity_id?: string,
+    sentiment?: string,
+    metadata?: any
+  ): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/api/feedback/`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ feature, rating, feedback_text, entity_id, sentiment, metadata })
+    });
+    if (!res.ok) throw new Error('Feedback submission failed');
+    return await res.json();
+  },
+
+  async getMyFeedback(): Promise<any[]> {
+    const res = await fetch(`${API_BASE_URL}/api/feedback/mine`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error('Failed to fetch personal feedback');
+    return await res.json();
+  },
+
+  // --- ADMIN TELEMETRY & INVITES ---
+  async getBetaMetrics(): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/api/admin/beta-metrics`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error('Failed to fetch admin beta metrics');
+    return await res.json();
+  },
+
+  async createBetaInvite(max_uses = 1, expiry_days = 30, cohort = 'aug-2026'): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/api/admin/create-invite`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ max_uses, expiry_days, cohort })
+    });
+    if (!res.ok) throw new Error('Failed to generate beta invite');
+    return await res.json();
+  },
+
+  async listBetaInvites(): Promise<any[]> {
+    const res = await fetch(`${API_BASE_URL}/api/admin/invites`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error('Failed to list beta invites');
+    return await res.json();
   }
 };

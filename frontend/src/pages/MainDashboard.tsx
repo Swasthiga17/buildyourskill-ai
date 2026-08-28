@@ -12,8 +12,8 @@ import {
   Network,
   BookOpen,
   Clock,
-  Zap
-} from 'lucide-react';
+import { Zap } from 'lucide-react';
+import { BetaOnboardingBanner } from '../components/BetaOnboardingBanner';
 
 export const MainDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -29,6 +29,9 @@ export const MainDashboard: React.FC = () => {
 
   return (
     <div className="space-y-8 select-none text-slate-900">
+      {/* Private Beta Onboarding Checklist Banner */}
+      <BetaOnboardingBanner />
+
       {/* Top Greeting Header */}
       <div className="glass-panel-glow p-8 rounded-3xl border border-emerald-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 bg-white/90 backdrop-blur-md shadow-md">
         <div className="space-y-2">

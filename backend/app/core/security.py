@@ -89,3 +89,14 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+async def require_admin(
+    current_user = Depends(get_current_user)
+):
+    """Enforces server-side administrator role authorization (HTTP 403 Forbidden for non-admins)."""
+    if getattr(current_user, "role", "user") != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Administrative privileges required to access this resource."
+        )
+    return current_user

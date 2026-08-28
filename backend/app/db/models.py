@@ -11,6 +11,7 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False, index=True)
     full_name = Column(String(255), nullable=False)
     hashed_password = Column(String(255), nullable=False)
+    role = Column(String(50), default="user") # "user", "admin"
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -23,6 +24,8 @@ class User(Base):
     documents = relationship("KnowledgeDocument", back_populates="user", cascade="all, delete-orphan")
     conversations = relationship("MentorConversation", back_populates="user", cascade="all, delete-orphan")
     interview_results = relationship("InterviewResult", back_populates="user", cascade="all, delete-orphan")
+    beta_membership = relationship("BetaMembership", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    feedbacks = relationship("Feedback", back_populates="user", cascade="all, delete-orphan")
 
 class UserProfile(Base):
     __tablename__ = "user_profiles"
@@ -301,3 +304,53 @@ class AIUsage(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User")
+
+class Feedback(Base):
+    __tablename__ = "feedback"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    feature = Column(String(50), default="general") # mentor, interview, project, roadmap, rag, assessment, general, bug
+    entity_id = Column(String(100), nullable=True)
+    rating = Column(Integer, default=5) # 1 to 5 stars
+    sentiment = Column(String(20), default="positive") # positive, neutral, negative
+    feedback_text = Column(Text, nullable=False)
+    metadata_json = Column(JSON, default=dict)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="feedbacks")
+
+class BetaInvite(Base):
+    __tablename__ = "beta_invites"
+
+    id = Column(Integer, primary_key=True, index=True)
+    code_hash = Column(String(255), unique=True, nullable=False, index=True)
+    code_prefix = Column(String(30), nullable=False) # e.g. "BS-AI-7KQ9"
+    max_uses = Column(Integer, default=1)
+    used_count = Column(Integer, default=0)
+    cohort = Column(String(50), default="aug-2026")
+    expires_at = Column(DateTime, nullable=False)
+    created_by = Column(Integer, nullable=True)
+    active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    memberships = relationship("BetaMembership", back_populates="invite")
+
+class BetaMembership(Base):
+    __tablename__ = "beta_memberships"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False)
+    invite_id = Column(Integer, ForeignKey("beta_invites.id", ondelete="SET NULL"), nullable=True)
+    status = Column(String(50), default="active") # invited, active, paused, removed
+    cohort = Column(String(50), default="aug-2026")
+    initial_knowledge_score = Column(Float, default=72.0)
+    onboarding_completed = Column(Boolean, default=False)
+    current_onboarding_step = Column(Integer, default=1)
+    completed_onboarding_steps = Column(JSON, default=list) # e.g. [1, 2]
+    joined_at = Column(DateTime, default=datetime.utcnow)
+    last_active_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="beta_membership")
+    invite = relationship("BetaInvite", back_populates="memberships")

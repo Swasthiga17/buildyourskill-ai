@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { SplashScreen } from './components/SplashScreen';
 import { AppLayout } from './components/AppLayout';
+import { BetaFeedbackModal } from './components/BetaFeedbackModal';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { MainDashboard } from './pages/MainDashboard';
@@ -14,8 +15,8 @@ import { InterviewReadiness } from './pages/InterviewReadiness';
 import { CareerDashboard } from './pages/CareerDashboard';
 import { AssessmentsCenter } from './pages/AssessmentsCenter';
 import { ProgressAnalytics } from './pages/ProgressAnalytics';
-import { LearnFromAnythingPage } from './pages/LearnFromAnythingPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { AdminBetaDashboard } from './pages/AdminBetaDashboard';
 
 // Multi-Page Roadmap & Dedicated Study Folder Imports
 import { RoadmapHome } from './pages/roadmap/RoadmapHome';
@@ -78,6 +79,7 @@ export const AppContent: React.FC<{ onTriggerSplash: () => void }> = ({ onTrigge
         <Route path="/career" element={<CareerDashboard />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
+      <BetaFeedbackModal />
     </AppLayout>
   );
 };

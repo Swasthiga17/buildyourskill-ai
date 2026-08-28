@@ -19,6 +19,9 @@ from app.api.assessments import router as assessments_router
 from app.api.knowledge import router as knowledge_router
 from app.api.github import router as github_router
 from app.api.today_plan import router as today_plan_router
+from app.api.feedback import router as feedback_router
+from app.api.admin import router as admin_router
+from app.api.beta import router as beta_router
 
 logger = logging.getLogger("growskill.main")
 logging.basicConfig(
@@ -72,6 +75,9 @@ app.include_router(assessments_router)
 app.include_router(knowledge_router)
 app.include_router(github_router)
 app.include_router(today_plan_router)
+app.include_router(feedback_router)
+app.include_router(admin_router)
+app.include_router(beta_router)
 
 @app.get("/")
 async def root():

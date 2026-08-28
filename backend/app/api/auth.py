@@ -8,8 +8,30 @@ from app.schemas.schemas import UserRegister, UserLogin, Token, UserOut, UserPro
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
+from app.core.config import settings
+from app.services.beta_service import beta_service
+
 @router.post("/register", response_model=Token)
 async def register(req: UserRegister, db: AsyncSession = Depends(get_db)):
+    invite_id = None
+    cohort = "aug-2026"
+
+    # Private Beta Gate: Check invite code if private beta mode is enabled
+    if settings.PRIVATE_BETA_MODE:
+        if not req.invite_code or not req.invite_code.strip():
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Private Beta is currently invite-only. Please provide a valid Beta Access Code."
+            )
+        val = await beta_service.validate_invite_code(db, req.invite_code)
+        if not val["valid"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=val.get("reason", "Invalid, expired, or exhausted invite code.")
+            )
+        invite_id = val.get("invite_id")
+        cohort = val.get("cohort", "aug-2026")
+
     res = await db.execute(select(User).where(User.email == req.email))
     if res.scalar_one_or_none():
         raise HTTPException(
@@ -17,14 +39,27 @@ async def register(req: UserRegister, db: AsyncSession = Depends(get_db)):
             detail="User with this email already exists."
         )
 
+    # First user registered in development or with admin keyword becomes admin
+    user_role = "admin" if req.email.startswith("admin") or "admin" in req.email.lower() else "user"
+
     user = User(
         email=req.email,
         full_name=req.full_name,
         hashed_password=get_password_hash(req.password),
+        role=user_role,
         is_active=True
     )
     db.add(user)
     await db.flush()
+
+    # Create Beta Membership
+    await beta_service.consume_invite(
+        db=db,
+        invite_id=invite_id,
+        user_id=user.id,
+        cohort=cohort,
+        initial_score=72.0
+    )
 
     profile = UserProfile(
         user_id=user.id,

@@ -8,6 +8,7 @@ class UserRegister(BaseModel):
     full_name: str
     password: str
     target_role: Optional[str] = "AI/ML Engineer"
+    invite_code: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -211,11 +212,40 @@ class CodeRunRequest(BaseModel):
     language: str = "python"
     test_cases: Optional[List[Dict[str, Any]]] = None
 
-class CodeRunResponse(BaseModel):
-    status: str # success, error, timeout
+class CodeExecutionResponse(BaseModel):
+    status: str # "success", "error", "timeout"
     output: str
     passed: int
     failed: int
     total: int
     execution_time_ms: float
     memory_used_kb: float
+
+CodeRunResponse = CodeExecutionResponse
+
+# --- Feedback & Beta Metrics Schemas ---
+class FeedbackCreate(BaseModel):
+    category: str = "platform" # mentor, interview, project, assessment, platform, bug
+    rating: int = Field(default=5, ge=1, le=5)
+    comment: str
+    metadata: Optional[Dict[str, Any]] = None
+
+class FeedbackOut(BaseModel):
+    id: int
+    user_id: int
+    category: str
+    rating: int
+    comment: str
+    created_at: datetime
+
+class BetaMetricsResponse(BaseModel):
+    total_beta_users: int
+    total_assessments_completed: int
+    total_interviews_evaluated: int
+    total_projects_generated: int
+    total_rag_documents: int
+    total_feedback_count: int
+    average_knowledge_score: float
+    average_readiness_score: float
+    cohort_rating_avg: float
+    active_environment: str
