@@ -48,14 +48,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
   if (isPublicPage) {
     if (location.pathname === '/login') {
       return (
-        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center selection:bg-emerald-500 selection:text-slate-950">
+        <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-center selection:bg-indigo-500 selection:text-white">
           <main className="flex-grow flex flex-col justify-center">{children}</main>
         </div>
       );
     }
 
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-emerald-500 selection:text-slate-950">
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
