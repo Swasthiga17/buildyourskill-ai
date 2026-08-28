@@ -1,262 +1,182 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Map, Lock, Sprout, ArrowRight } from 'lucide-react';
+import {
+  CheckCircle2,
+  Clock,
+  Lock,
+  ArrowRight,
+  Sparkles,
+  Share2,
+  Brain,
+  Zap,
+  Target
+} from 'lucide-react';
 
 export const RoadmapHome: React.FC = () => {
-  const stages = [
-    {
-      id: 'python',
-      code: '01',
-      title: 'Python & Programming',
-      path: '/study/python',
-      icon: '🐍',
-      progress: 85,
-      status: 'Skipped ✓ (Mastered)',
-      isUnlocked: true,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/qi_WWRaeeVgt1fyQyBG6HgRp3UH0B0R6DryZAV8LL5O2ebVoUSMRsg5_NOrW5cjvoqyNny89kqAwyjau84afqSM_yI1Y8BsjpHexAMl53z6lpPoDgroxuK6j_yAIn8OmFT68aSXCnlackyZ1zgFnWkTNTsR9PqK-PuPJCE_jyVxf1-TI0Pb1196jpRUNQXs7?purpose=fullsize'
-    },
-    {
-      id: 'math',
-      code: '02',
-      title: 'Mathematics & Statistics',
-      path: '/study/math',
-      icon: '📐',
-      progress: 65,
-      status: 'In Progress',
-      isUnlocked: true,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/SDaD0wgXYyL9dpK4jWJ8EdRSBP05SGUTfFFcIGHsbFLphi7MdXNGq1sEC9d21eOknlCC4JTLnkwK86BupNiY1LeForQ470iJqlIPJaN3ssBh9WhFH7CXu7UJwHE7pAHQjkvpCJ6QFUKMfmbM-LaQYa_Buh42uZqav31mfEPZzdwf2m1bGC2tb6yh1q_Y5DzC?purpose=fullsize'
-    },
-    {
-      id: 'ml',
-      code: '03',
-      title: 'Machine Learning',
-      path: '/study/ml',
-      icon: '📊',
-      progress: 60,
-      status: 'Active Focus ⚡',
-      isUnlocked: true,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/eXgq3-3uiyNd5kSt83eKKs3lbcxiMX3WedUn-voFBfEMIYxJRO0sxkCsfEspyKQuuLskuDnvgcgAejl2dPmPVxM-MdqFaQQrjWT0ol9-NcdfU6Vt-et6_y3dd_wMavsWcfSjYG7sv__HpDKqzzcmYJjwzIFAOAizE51v5Pzt7XUHLd_HH-HHFRmjawDtskOO?purpose=fullsize'
-    },
-    {
-      id: 'dl',
-      code: '04',
-      title: 'Deep Learning',
-      path: '/study/dl',
-      icon: '🧠',
-      progress: 48,
-      status: 'Priority Gap',
-      isUnlocked: true,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/YJ3Ya3dS4JhRly-JPKwr7s_VfVr42F2nrSmbwPtrSPF1VVH51hKlIVPNA7-Yx9A6d1qfv0v6W0rvWXCpfPNToqRajdhDDMSJ7h-RIiB-97FZ5fNv75Z54XOGCM0aTAKGh5EiyP4cJbAvWK-2WSNuZs_dzu62wH6jlHaGt4MxdQ4hs4xqPsNMAgt-t7rlJ7oq?purpose=fullsize'
-    },
-    {
-      id: 'nlp-cv',
-      code: '05',
-      title: 'NLP & Computer Vision',
-      path: '/study/nlp-cv',
-      icon: '🔤',
-      progress: 65,
-      status: 'Upcoming',
-      isUnlocked: false,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/EANigXqC_J7XQY-m_OAZ6ZzNgjbyVuLf8rKTX3m050MNiTLTzeh33-WEE_Rr3sJoFeHWKbmbKg-dsbhcXzzY38JVeomWtMu8vvnRO_E1XoKHuXtkA9oVsgWmOMSGHwgsCDA_760i1zDxtBdSX1rFH6Ge6Af8OhXGUGwmKRGoig_ku_apDlTf7WJVAEFp9vhg?purpose=fullsize'
-    },
-    {
-      id: 'transformers',
-      code: '06',
-      title: 'Transformers',
-      path: '/study/transformers',
-      icon: '⚡',
-      progress: 70,
-      status: 'Upcoming',
-      isUnlocked: false,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/vYND5sgbADTAKuA2ORJPABGnaHyV2HNjhjiTXrPsQos3G-pMZQ7i-aJ1nVu6QnhoFIAOkNJTUv358mp81aIK6SSjkZdCIa5HegUmVeGCSCH9BTZl2tDHkvB0kNymYxdhmwGjLFIjS4Gvc2AFYRUYbqw4TW0DMV37vbACeUWyngQLZmAUxknJcfD_9_QiT2_4?purpose=fullsize'
-    },
-    {
-      id: 'llms',
-      code: '07',
-      title: 'LLM Engineering',
-      path: '/study/llms',
-      icon: '🤖',
-      progress: 78,
-      status: 'Upcoming',
-      isUnlocked: false,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/WYykrp6dJxcZ4HYyWjyZ6sV84yGTcI2YaJr7BFoQAs4tltEXxncwmzfgUDs0j0mXnvmaEl9HezilGTlRRBv3wrClUQkDkbEXpby3c7wxhDH2LUnfS1Yzibf-TWl-2A2Lnb5Ja0DDUO4ANf3LkCYyps-S8x8YSS7ghkQGCBFrhV3-ePrKOZ4B5e0uHzAqk91g?purpose=fullsize'
-    },
-    {
-      id: 'rag',
-      code: '08',
-      title: 'RAG Engineering',
-      path: '/study/rag',
-      icon: '🔎',
-      progress: 82,
-      status: 'Upcoming',
-      isUnlocked: false,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/2VFt2zcWjP77K5djvaHoabE0GKB1Ymyt20xoEgVROjwyqqMC8LI28N7tInBtMY5mRgqCpv4c9yK-4JoQQ8B7R_9drLmR9ROxdM8Q44if0x64MrFe8J_pNdzknP2nMzhM9alg-iTOLWeq_xGzwP6Rjzr-OlUUlVaXDbeMt1-j5q9L4dAGmbTfnFaFwiOsoXx5?purpose=fullsize'
-    },
-    {
-      id: 'agents',
-      code: '09',
-      title: 'Agentic AI',
-      path: '/study/agents',
-      icon: '🕸️',
-      progress: 72,
-      status: 'Upcoming',
-      isUnlocked: false,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/giQw5eazZ-ZJnjy8etV17Lu7jWsTGVAWEELzYB1nh83Dj2MhkibmpyAjV1hJ607eSwboS-JuN6MpXNHtBHcFFqWqn1GIdztuba1kZWLQpqntyAQnYg2yuiToKIzQCNvNsFIFbFGkIZBltT-h84vYEhadfT2Rq4cB76QN0VWXf5HeWfCFhJnPiEGZphXasiKg?purpose=fullsize'
-    },
-    {
-      id: 'mlops',
-      code: '10',
-      title: 'MLOps',
-      path: '/study/mlops',
-      icon: '🚀',
-      progress: 35,
-      status: 'Priority Gap',
-      isUnlocked: false,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/3EIrut8xqb2lLZ9McA4SVL4r-9FScTqcUrbni7lEoBqaisTcirQlCPrRFfrlnYxEl2Jkq_rPiurBat7FzlU_Q86N-dAOhub5R3VyNRUupQjtZPJV8QUQyszjYxc-5zfSbjB-08SgZHBXysSuuE8WEl-NgXkk5drTIt7v8Yrp-eid3VYG30Cze8UtP18ktm9j?purpose=fullsize'
-    },
-    {
-      id: 'system-design',
-      code: '11',
-      title: 'AI System Design',
-      path: '/study/system-design',
-      icon: '🏗️',
-      progress: 40,
-      status: 'Upcoming',
-      isUnlocked: false,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/omYS3Tn61k75Hxsl72tIF0JEUyxNdTqRTZoSOs-ZJHxBJS-hoILMdVBdXbkhLmJovXLqn9ca2fZXdAOuwXuxlIyTJatoQlZqE504me-da9tFvTxKWjzSkMCWU-AUQIP_aPv6lb2xdBbNeZPbYNBc_kTvNqQDyN32zpXFESr-ZknuKFwuXyvHwZAi4RMWKHPX?purpose=fullsize'
-    },
-    {
-      id: 'career',
-      code: '12',
-      title: 'AI/ML Engineer Career',
-      path: '/study/career',
-      icon: '🏆',
-      progress: 82,
-      status: 'Destination',
-      isUnlocked: false,
-      imageUrl:
-        'https://images.openai.com/static-rsc-4/98SYmdqrXxwS79flTFui-3h_839-lYbZTqWUvtYPVLyQRVoBjVpA7K9k0dPpgdI5Nux5uDO4F4_XlO8cgL3r81zwAsESuB8VcZsw5_7C5ZahKsCSAw1WkoJTBLXix_7SVYmWSYWN5_-tPSQesgMQDLAuxyvvH7WKfp5-enshOt2lcv0_X1eUoGCfkXJGpc-x?purpose=fullsize'
-    }
-  ];
+  const [activeTab, setActiveTab] = useState<'roadmap' | 'milestones'>('roadmap');
 
   return (
-    <div className="space-y-10 select-none text-slate-900">
-      {/* Visual Roadmap Header */}
-      <div className="glass-panel-glow p-8 sm:p-10 rounded-3xl border border-emerald-300 space-y-6 bg-white/90 backdrop-blur-md shadow-md">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <span className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-mono font-black tracking-wider">
-              <Sprout className="w-4 h-4 text-emerald-600" />
-              <span>AI/ML ROADMAP GRAPH</span>
-            </span>
-            <span className="px-3 py-1 rounded-full bg-amber-100 border border-amber-300 text-xs font-mono text-amber-900 font-bold">
-              12 Stages Timeline
-            </span>
-          </div>
-
-          <Link
-            to="/study"
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-emerald-600 to-blue-600 text-white font-black text-xs inline-flex items-center space-x-1.5 shadow-md hover:scale-105 transition-all"
-          >
-            <span>Open Study Preparation Hub</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="space-y-2">
-          <h1 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight">
-            AI/ML Engineer <span className="text-gradient-emerald">Roadmap</span>
+    <div className="space-y-6 select-none text-slate-900 font-sans">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            Your Personalized Roadmap
           </h1>
-          <p className="text-base text-slate-700 font-sans font-medium">
-            Personalized 12-stage adaptive skill graph. Click any unlocked stage to open its step-by-step preparation notes.
+          <p className="text-xs sm:text-sm text-slate-500 font-medium">
+            A dynamic path that adapts to your progress.
           </p>
         </div>
 
-        {/* Overall Progress Meter */}
-        <div className="p-5 rounded-2xl bg-white/80 border border-emerald-200 space-y-3 font-mono">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-800 font-bold">Overall Progress: 38%</span>
-            <span className="text-emerald-700 font-black">4 / 12 Stages Mastered</span>
-          </div>
-          <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
-            <div className="bg-gradient-to-r from-amber-400 via-emerald-500 to-blue-600 h-full rounded-full w-[38%]" />
-          </div>
+        <div className="flex items-center gap-3">
+          <span className="px-3 py-1.5 rounded-xl bg-white border border-[#E8E4D8] text-xs font-bold text-slate-700 shadow-2xs">
+            Role: AI/ML Engineer
+          </span>
+          <button className="px-4 py-1.5 rounded-xl bg-white border border-[#E8E4D8] text-xs font-bold text-slate-700 shadow-2xs hover:bg-slate-50 transition-all flex items-center gap-1.5">
+            <Share2 className="w-3.5 h-3.5" />
+            <span>Share</span>
+          </button>
         </div>
       </div>
 
-      {/* 🖼️ Pure Visual 12-Stage Roadmap Grid */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-3">
-            <Map className="w-6 h-6 text-emerald-600" />
-            <span>AI/ML ENGINEER STAGE GRAPH</span>
-          </h2>
-          <span className="text-xs font-mono text-slate-600 font-bold">12 Visual Stage Cards</span>
+      {/* Tabs */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => setActiveTab('roadmap')}
+          className={`px-5 py-2 rounded-xl text-xs font-bold transition-all ${
+            activeTab === 'roadmap'
+              ? 'bg-[#2563EB] text-white shadow-xs'
+              : 'bg-white border border-[#E8E4D8] text-slate-600 hover:bg-slate-50'
+          }`}
+        >
+          Roadmap
+        </button>
+        <button
+          onClick={() => setActiveTab('milestones')}
+          className={`px-5 py-2 rounded-xl text-xs font-bold transition-all ${
+            activeTab === 'milestones'
+              ? 'bg-[#2563EB] text-white shadow-xs'
+              : 'bg-white border border-[#E8E4D8] text-slate-600 hover:bg-slate-50'
+          }`}
+        >
+          Milestones
+        </button>
+      </div>
+
+      {/* Step Sequence Cards matching Image */}
+      <div className="space-y-4">
+        
+        {/* Step 1: Assess */}
+        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-emerald-200/80 shadow-2xs flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
+              01
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-900">Assess</h3>
+              <p className="text-xs text-slate-500">Discover your baseline</p>
+            </div>
+          </div>
+          <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5" /> Completed
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {stages.map((stage) => (
+        {/* Step 2: Understand */}
+        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-emerald-200/80 shadow-2xs flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
+              02
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-900">Understand</h3>
+              <p className="text-xs text-slate-500">Build your Knowledge Twin</p>
+            </div>
+          </div>
+          <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5" /> Completed
+          </span>
+        </div>
+
+        {/* Step 3: Learn (Active Card with Why This / Why Now) */}
+        <div className="p-6 sm:p-7 rounded-3xl bg-amber-50/70 border-2 border-amber-300 shadow-sm space-y-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm">
+                03
+              </div>
+              <div>
+                <h3 className="text-base font-black text-slate-900">Learn</h3>
+                <p className="text-xs text-slate-600 font-medium">Adaptive learning path</p>
+              </div>
+            </div>
+            <span className="px-3.5 py-1 rounded-full bg-amber-200 text-amber-950 font-black text-xs flex items-center gap-1">
+              <span>⚡ In Progress</span>
+            </span>
+          </div>
+
+          {/* Why This & Why Now sub-cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans">
+            <div className="p-4 rounded-2xl bg-white border border-amber-200 space-y-1.5">
+              <span className="text-[10px] font-mono font-bold text-amber-700 uppercase block">WHY THIS?</span>
+              <h4 className="font-bold text-slate-900">Master PyTorch Autograd & Tensor DAGs</h4>
+              <p className="text-[11px] text-slate-600 leading-relaxed">
+                Your Knowledge Twin identified PyTorch backward hooks as your primary gap (48% mastery vs 90% target).
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white border border-amber-200 space-y-1.5">
+              <span className="text-[10px] font-mono font-bold text-amber-700 uppercase block">WHY NOW?</span>
+              <h4 className="font-bold text-slate-900">Prerequisite for Deep Learning Projects</h4>
+              <p className="text-[11px] text-slate-600 leading-relaxed">
+                Completing this stage unlocks your distributed multi-agent RAG project milestone.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-xs text-slate-500 font-bold">Estimated: 50 min left today</span>
             <Link
-              key={stage.id}
-              to={stage.isUnlocked ? stage.path : '#locked'}
-              className={`relative group rounded-3xl overflow-hidden border transition-all duration-300 cursor-pointer flex flex-col justify-between h-64 select-none bg-white/90 backdrop-blur-md shadow-md ${
-                stage.isUnlocked
-                  ? 'border-emerald-300 hover:border-emerald-500 hover:scale-[1.03] hover:shadow-xl'
-                  : 'border-slate-200/60 opacity-60 cursor-not-allowed'
-              }`}
+              to="/roadmap/ml"
+              className="px-6 py-2.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold transition-all shadow-xs"
             >
-              <img
-                src={stage.imageUrl}
-                alt={stage.title}
-                className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 ${
-                  stage.isUnlocked ? 'opacity-85 group-hover:opacity-100 group-hover:scale-110' : 'opacity-30 blur-[1px]'
-                }`}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
-
-              <div className="relative z-10 p-4 flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-white/95 border border-emerald-300 text-xs font-mono font-black text-emerald-700 shadow-sm">
-                  {stage.code} {stage.icon}
-                </span>
-                {!stage.isUnlocked ? (
-                  <span className="px-3 py-1 rounded-full bg-white/90 border border-slate-300 text-xs font-mono text-slate-600 flex items-center space-x-1.5 font-bold shadow-sm">
-                    <Lock className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>Locked</span>
-                  </span>
-                ) : (
-                  <span className="w-3 h-3 rounded-full bg-emerald-500 shadow-lg animate-pulse" />
-                )}
-              </div>
-
-              <div className="relative z-10 p-5 space-y-2">
-                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-snug drop-shadow-sm group-hover:text-emerald-700 transition-colors">
-                  {stage.title}
-                </h3>
-                <div className="flex items-center justify-between text-xs font-mono text-slate-800 pt-2 border-t border-slate-200">
-                  <span className="font-bold">{stage.progress}% Mastered</span>
-                  <span
-                    className={`font-black ${
-                      !stage.isUnlocked ? 'text-slate-500' : 'text-emerald-700'
-                    }`}
-                  >
-                    {!stage.isUnlocked ? 'Locked 🔒' : stage.status}
-                  </span>
-                </div>
-              </div>
+              Continue Learning →
             </Link>
-          ))}
+          </div>
         </div>
+
+        {/* Step 4: Build */}
+        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-[#E8E4D8] shadow-2xs flex items-center justify-between opacity-80">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-sm">
+              04
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-800">Build</h3>
+              <p className="text-xs text-slate-500">Real-world sandboxed projects</p>
+            </div>
+          </div>
+          <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-bold text-xs flex items-center gap-1.5">
+            <Lock className="w-3.5 h-3.5" /> Locked
+          </span>
+        </div>
+
+        {/* Step 5: Grow */}
+        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-[#E8E4D8] shadow-2xs flex items-center justify-between opacity-80">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-sm">
+              05
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-800">Grow</h3>
+              <p className="text-xs text-slate-500">Staff career interview readiness</p>
+            </div>
+          </div>
+          <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-bold text-xs flex items-center gap-1.5">
+            <Lock className="w-3.5 h-3.5" /> Locked
+          </span>
+        </div>
+
       </div>
     </div>
   );
