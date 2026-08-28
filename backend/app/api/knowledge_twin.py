@@ -8,6 +8,8 @@ from app.schemas.schemas import KnowledgeTwinSummary, AddEvidenceRequest
 
 router = APIRouter(prefix="/api/knowledge-twin", tags=["knowledge-twin"])
 
+from app.services.telemetry import telemetry_service
+
 @router.get("/", response_model=KnowledgeTwinSummary)
 async def get_twin_summary(
     current_user: User = Depends(get_current_user),
@@ -16,6 +18,7 @@ async def get_twin_summary(
     data = await knowledge_twin_service.get_user_twin(db, current_user.id)
     if not data:
         raise HTTPException(status_code=404, detail="Knowledge Twin profile not found.")
+    await telemetry_service.track_event(db, current_user.id, "knowledge_twin_viewed")
     return data
 
 @router.get("/skills")

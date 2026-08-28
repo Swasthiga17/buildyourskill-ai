@@ -314,6 +314,8 @@ class Feedback(Base):
     entity_id = Column(String(100), nullable=True)
     rating = Column(Integer, default=5) # 1 to 5 stars
     sentiment = Column(String(20), default="positive") # positive, neutral, negative
+    quality_category = Column(String(50), default="accuracy") # accuracy, relevance, clarity, personalization, technical_depth
+    correctness = Column(String(30), default="correct") # correct, partially_correct, incorrect (hallucination flagging)
     feedback_text = Column(Text, nullable=False)
     metadata_json = Column(JSON, default=dict)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -344,7 +346,21 @@ class BetaMembership(Base):
     invite_id = Column(Integer, ForeignKey("beta_invites.id", ondelete="SET NULL"), nullable=True)
     status = Column(String(50), default="active") # invited, active, paused, removed
     cohort = Column(String(50), default="aug-2026")
+    
+    # Immutable Baseline Measurement Snapshot
     initial_knowledge_score = Column(Float, default=72.0)
+    initial_skill_scores = Column(JSON, default=dict)
+    initial_skill_gaps = Column(JSON, default=list)
+
+    # Tester Profile Personalization
+    primary_goal = Column(String(255), default="Become Staff AI/ML Engineer")
+    weekly_learning_hours = Column(Float, default=10.0)
+    learning_style = Column(String(100), default="Hands-on Project Building")
+
+    # Activation Tracking
+    is_activated = Column(Boolean, default=False)
+    activated_at = Column(DateTime, nullable=True)
+
     onboarding_completed = Column(Boolean, default=False)
     current_onboarding_step = Column(Integer, default=1)
     completed_onboarding_steps = Column(JSON, default=list) # e.g. [1, 2]
@@ -354,3 +370,14 @@ class BetaMembership(Base):
 
     user = relationship("User", back_populates="beta_membership")
     invite = relationship("BetaInvite", back_populates="memberships")
+
+class TelemetryEvent(Base):
+    __tablename__ = "telemetry_events"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    event_name = Column(String(100), nullable=False, index=True)
+    event_properties = Column(JSON, default=dict)
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+    user = relationship("User")

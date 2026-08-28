@@ -9,6 +9,8 @@ from app.schemas.schemas import SkillGapsResponse
 
 router = APIRouter(prefix="/api/skill-gaps", tags=["skill-gaps"])
 
+from app.services.telemetry import telemetry_service
+
 @router.get("/", response_model=SkillGapsResponse)
 async def get_skill_gaps(
     target_role: Optional[str] = Query(None, description="Filter by target career role"),
@@ -18,4 +20,5 @@ async def get_skill_gaps(
     data = await skill_gap_engine.calculate_gaps(db, current_user.id, target_role=target_role)
     if not data:
         raise HTTPException(status_code=404, detail="Unable to compute skill gaps.")
+    await telemetry_service.track_event(db, current_user.id, "skill_gaps_viewed")
     return data

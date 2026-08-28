@@ -63,6 +63,14 @@ async def submit_assessment(
         confidence="high"
     )
 
+    from app.services.telemetry import telemetry_service
+    await telemetry_service.track_event(
+        db=db,
+        user_id=current_user.id,
+        event_name="assessment_completed",
+        properties={"skill_code": skill_code, "score": score, "stage_id": stage_id}
+    )
+
     twin = await knowledge_twin_service.get_user_twin(db, current_user.id)
     return {
         "status": "success",

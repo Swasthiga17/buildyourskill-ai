@@ -56,6 +56,17 @@ async def init_db():
             await conn.execute(text("ALTER TABLE feedback ADD COLUMN entity_id VARCHAR(100)"))
             await conn.execute(text("ALTER TABLE feedback ADD COLUMN sentiment VARCHAR(20) DEFAULT 'positive'"))
             await conn.execute(text("ALTER TABLE feedback ADD COLUMN feedback_text TEXT"))
+        try:
+            from sqlalchemy import text
+            await conn.execute(text("ALTER TABLE feedback ADD COLUMN quality_category VARCHAR(50) DEFAULT 'accuracy'"))
+            await conn.execute(text("ALTER TABLE feedback ADD COLUMN correctness VARCHAR(30) DEFAULT 'correct'"))
+            await conn.execute(text("ALTER TABLE beta_memberships ADD COLUMN initial_skill_scores JSON"))
+            await conn.execute(text("ALTER TABLE beta_memberships ADD COLUMN initial_skill_gaps JSON"))
+            await conn.execute(text("ALTER TABLE beta_memberships ADD COLUMN primary_goal VARCHAR(255)"))
+            await conn.execute(text("ALTER TABLE beta_memberships ADD COLUMN weekly_learning_hours FLOAT"))
+            await conn.execute(text("ALTER TABLE beta_memberships ADD COLUMN learning_style VARCHAR(100)"))
+            await conn.execute(text("ALTER TABLE beta_memberships ADD COLUMN is_activated BOOLEAN DEFAULT 0"))
+            await conn.execute(text("ALTER TABLE beta_memberships ADD COLUMN activated_at DATETIME"))
         except Exception:
             pass
 

@@ -8,7 +8,7 @@ from app.services.roadmap_engine import roadmap_engine
 from app.services.knowledge_twin import knowledge_twin_service
 from app.schemas.schemas import RoadmapResponse, PersonalizeRoadmapRequest
 
-router = APIRouter(prefix="/api/roadmap", tags=["roadmap"])
+from app.services.telemetry import telemetry_service
 
 @router.get("/", response_model=RoadmapResponse)
 async def get_roadmap(
@@ -18,6 +18,7 @@ async def get_roadmap(
     data = await roadmap_engine.get_adaptive_roadmap(db, current_user.id)
     if not data:
         raise HTTPException(status_code=404, detail="Roadmap not found.")
+    await telemetry_service.track_event(db, current_user.id, "roadmap_viewed")
     return data
 
 @router.post("/personalize")

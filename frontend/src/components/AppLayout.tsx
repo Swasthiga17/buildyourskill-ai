@@ -48,23 +48,23 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
   if (isPublicPage) {
     if (location.pathname === '/login') {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-[#FEF08A] via-[#A7F3D0] to-[#60A5FA] text-slate-900 flex flex-col justify-center selection:bg-emerald-400 selection:text-slate-950">
+        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center selection:bg-emerald-500 selection:text-slate-950">
           <main className="flex-grow flex flex-col justify-center">{children}</main>
         </div>
       );
     }
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#FEF08A] via-[#A7F3D0] to-[#60A5FA] text-slate-900 flex flex-col justify-between selection:bg-emerald-400 selection:text-slate-950">
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-emerald-500 selection:text-slate-950">
         <Navbar />
-        <main className="flex-grow flex flex-col justify-center">{children}</main>
+        <main className="flex-grow">{children}</main>
         <Footer />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FEF08A] via-[#A7F3D0] to-[#60A5FA] text-slate-900 flex selection:bg-emerald-400 selection:text-slate-950 relative">
+    <div className="min-h-screen bg-slate-900 text-slate-100 flex selection:bg-emerald-500 selection:text-slate-950 relative">
       {/* Sidebar Navigation */}
       <Sidebar
         collapsed={sidebarCollapsed}

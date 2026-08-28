@@ -231,3 +231,63 @@ async def get_beta_metrics(
             "dropoff_by_step": step_dropoff
         }
     }
+
+from app.services.telemetry import telemetry_service
+
+@router.get("/beta-funnel")
+async def get_beta_funnel(
+    cohort: Optional[str] = None,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """Calculates activation funnel and conversion rates for beta testers (Admin Only)."""
+    funnel = await telemetry_service.get_funnel_analytics(db, cohort)
+    retention = await telemetry_service.get_retention_analytics(db)
+    skill_deltas = await telemetry_service.get_skill_improvement_breakdown(db)
+
+    return {
+        "cohort": cohort or "aug-2026",
+        "funnel": funnel,
+        "retention": retention,
+        "skill_improvements": skill_deltas
+    }
+
+@router.get("/beta-feedback")
+async def get_beta_feedback_list(
+    feature: Optional[str] = None,
+    rating: Optional[int] = None,
+    sentiment: Optional[str] = None,
+    quality_category: Optional[str] = None,
+    limit: int = 50,
+    current_admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """Lists aggregated and categorized tester feedback, ratings, and hallucination flags (Admin Only)."""
+    query = select(Feedback).order_by(Feedback.created_at.desc())
+    if feature:
+        query = query.where(Feedback.feature == feature.lower())
+    if rating:
+        query = query.where(Feedback.rating == rating)
+    if sentiment:
+        query = query.where(Feedback.sentiment == sentiment.lower())
+    if quality_category:
+        query = query.where(Feedback.quality_category == quality_category.lower())
+
+    res = await db.execute(query.limit(limit))
+    feedbacks = res.scalars().all()
+
+    return [
+        {
+            "id": f.id,
+            "user_id": f.user_id,
+            "feature": f.feature,
+            "entity_id": f.entity_id,
+            "rating": f.rating,
+            "sentiment": f.sentiment,
+            "quality_category": f.quality_category,
+            "correctness": f.correctness,
+            "feedback_text": f.feedback_text,
+            "created_at": f.created_at
+        }
+        for f in feedbacks
+    ]

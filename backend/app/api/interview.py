@@ -85,6 +85,14 @@ Respond in strict JSON with:
 
     twin = await knowledge_twin_service.get_user_twin(db, current_user.id)
 
+    from app.services.telemetry import telemetry_service
+    await telemetry_service.track_event(
+        db=db,
+        user_id=current_user.id,
+        event_name="interview_completed",
+        properties={"question_title": req.question_title, "overall_score": overall_score}
+    )
+
     return InterviewEvaluationResponse(
         overall_score=overall_score,
         depth_score=depth_score,

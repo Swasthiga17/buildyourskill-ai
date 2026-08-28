@@ -474,5 +474,30 @@ export const apiService = {
     });
     if (!res.ok) throw new Error('Failed to list beta invites');
     return await res.json();
+  },
+
+  async getBetaFunnel(cohort?: string): Promise<any> {
+    const url = cohort
+      ? `${API_BASE_URL}/api/admin/beta-funnel?cohort=${encodeURIComponent(cohort)}`
+      : `${API_BASE_URL}/api/admin/beta-funnel`;
+    const res = await fetch(url, { headers: getAuthHeaders() });
+    if (!res.ok) throw new Error('Failed to fetch beta funnel metrics');
+    return await res.json();
+  },
+
+  async getBetaFeedbackList(params?: { feature?: string; rating?: number; sentiment?: string }): Promise<any[]> {
+    let query = '';
+    if (params) {
+      const q = new URLSearchParams();
+      if (params.feature) q.append('feature', params.feature);
+      if (params.rating) q.append('rating', params.rating.toString());
+      if (params.sentiment) q.append('sentiment', params.sentiment);
+      query = `?${q.toString()}`;
+    }
+    const res = await fetch(`${API_BASE_URL}/api/admin/beta-feedback${query}`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error('Failed to fetch beta feedback list');
+    return await res.json();
   }
 };
