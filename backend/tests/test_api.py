@@ -1,4 +1,5 @@
 import pytest
+import time
 from httpx import AsyncClient, ASGITransport
 from app.main import app
 from app.db.session import init_db
@@ -56,7 +57,7 @@ async def test_knowledge_twin_and_evidence():
         ev_res = await client.post("/api/knowledge-twin/evidence", json={
             "skill_code": "pytorch",
             "evidence_type": "quiz",
-            "title": "PyTorch Autograd Quiz",
+            "title": f"PyTorch Tensor Lab {time.time()}",
             "detail": "Scored 95% on tensor operations",
             "score": 95.0,
             "confidence": "high"

@@ -118,6 +118,7 @@ class RoadmapStepOut(BaseModel):
     estimated_hours: int
     progress: float
     status: str # locked, unlocked, active, completed, skipped
+    recommended_action: Optional[str] = "LEARN"
     prerequisites: List[str] = []
     topics: List[RoadmapTopicOut] = []
 
