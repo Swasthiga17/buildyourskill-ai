@@ -105,6 +105,52 @@ Respond in strict JSON with the following structure:
         created_at=project.created_at
     )
 
+@router.post("/{project_id}/complete")
+async def complete_project(
+    project_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    from app.services.evidence import evidence_engine
+
+    res = await db.execute(
+        select(Project).where(Project.id == project_id, Project.user_id == current_user.id)
+    )
+    project = res.scalar_one_or_none()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    project.status = "completed"
+    await db.flush()
+
+    # Map tech stack / category to skill code
+    skill_code = "rag"
+    if "pytorch" in str(project.tech_stack).lower():
+        skill_code = "pytorch"
+    elif "langchain" in str(project.tech_stack).lower() or "llm" in project.category.lower():
+        skill_code = "llm"
+    elif "agent" in project.title.lower() or "agent" in project.category.lower():
+        skill_code = "agents"
+
+    evidence_res = await evidence_engine.record_learning_evidence(
+        db=db,
+        user_id=current_user.id,
+        skill_code=skill_code,
+        source_type="project",
+        source_id=str(project.id),
+        title=f"Completed Portfolio Project: {project.title}",
+        detail=f"Built and validated end-to-end architecture with milestones: {project.objective}",
+        score=92.0,
+        confidence="high",
+        metadata={"project_id": project.id, "tech_stack": project.tech_stack}
+    )
+
+    return {
+        "status": "success",
+        "project_id": project.id,
+        "evidence": evidence_res
+    }
+
 @router.get("/saved", response_model=List[ProjectOut])
 async def get_saved_projects(
     current_user: User = Depends(get_current_user),
