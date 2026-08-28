@@ -15,6 +15,7 @@ import { InterviewReadiness } from './pages/InterviewReadiness';
 import { CareerDashboard } from './pages/CareerDashboard';
 import { AssessmentsCenter } from './pages/AssessmentsCenter';
 import { ProgressAnalytics } from './pages/ProgressAnalytics';
+import { LearnFromAnythingPage } from './pages/LearnFromAnythingPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { AdminBetaDashboard } from './pages/AdminBetaDashboard';
 
@@ -78,6 +79,7 @@ export const AppContent: React.FC<{ onTriggerSplash: () => void }> = ({ onTrigge
         <Route path="/interview" element={<InterviewReadiness />} />
         <Route path="/career" element={<CareerDashboard />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/admin" element={<AdminBetaDashboard />} />
       </Routes>
       <BetaFeedbackModal />
     </AppLayout>
