@@ -4,12 +4,23 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 from sqlalchemy.future import select
 from app.core.config import settings
 
-# Engine setup
+# Engine setup with connection pooling for PostgreSQL and local fallback for SQLite
+engine_kwargs = {
+    "echo": False,
+    "future": True,
+    "pool_pre_ping": True
+}
+
+if "postgresql" in settings.DATABASE_URL.lower():
+    engine_kwargs.update({
+        "pool_size": settings.DB_POOL_SIZE,
+        "max_overflow": settings.DB_MAX_OVERFLOW,
+        "pool_timeout": settings.DB_POOL_TIMEOUT
+    })
+
 engine = create_async_engine(
     settings.DATABASE_URL,
-    echo=False,
-    future=True,
-    pool_pre_ping=True
+    **engine_kwargs
 )
 
 AsyncSessionLocal = async_sessionmaker(

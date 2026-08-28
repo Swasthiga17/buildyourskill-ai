@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # 1. Managed PostgreSQL 16 with pgvector extension
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: growskill-prod-db
+    restart: always
+    environment:
+      POSTGRES_DB: growskill_prod
+      POSTGRES_USER: growskill_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-prod_secure_db_password_2026}
+    volumes:
+      - growskill_pgdata:/var/lib/postgresql/data
+    networks:
+      - internal-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U growskill_admin -d growskill_prod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    # PostgreSQL is NOT exposed to public internet
+
+  # 2. FastAPI Async Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: growskill-prod-backend
+    restart: always
+    environment:
+      ENVIRONMENT: production
+      DATABASE_URL: postgresql+psycopg://growskill_admin:${POSTGRES_PASSWORD:-prod_secure_db_password_2026}@postgres:5432/growskill_prod
+      SECRET_KEY: ${SECRET_KEY:-e8c9b3a7f1d2e4c6a8b0d2f4e6a8c0b2d4f6a8b0c2d4e6f8a0b2c4d6e8f0a2b4}
+      DEFAULT_LLM_PROVIDER: gemini
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      DEFAULT_LLM_MODEL: gemini-1.5-flash
+      STRICT_LLM_MODE: "true"
+      BACKEND_CORS_ORIGINS: '["https://app.buildyourskill.ai","http://localhost:80"]'
+      RATE_LIMIT_ENABLED: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health/live || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    ports:
+      - "8000:8000"
+
+  # 3. High-Performance React Frontend (Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: growskill-prod-frontend
+    restart: always
+    environment:
+      VITE_API_BASE_URL: https://api.buildyourskill.ai
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - internal-net
+    ports:
+      - "80:80"
+      - "443:443"
+
+volumes:
+  growskill_pgdata:
+    driver: local
+
+networks:
+  internal-net:
+    driver: bridge

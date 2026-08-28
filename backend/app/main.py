@@ -3,9 +3,11 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
+from app.core.middleware import SecurityAndObservabilityMiddleware
 from app.db.session import init_db
 
 # Import all API routers
+from app.api.health import router as health_router
 from app.api.auth import router as auth_router
 from app.api.knowledge_twin import router as knowledge_twin_router
 from app.api.skill_gap import router as skill_gap_router
@@ -19,37 +21,46 @@ from app.api.github import router as github_router
 from app.api.today_plan import router as today_plan_router
 
 logger = logging.getLogger("growskill.main")
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Initialize DB and seed curriculum
-    logger.info("Initializing database tables and seeding baseline AI curriculum...")
+    logger.info(f"Starting {settings.PROJECT_NAME} (Environment: {settings.ENVIRONMENT})...")
     try:
         await init_db()
         logger.info("Database initialized and ready.")
     except Exception as e:
         logger.error(f"Error during DB initialization: {e}")
     yield
-    # Shutdown
-    logger.info("Shutting down GrowSkill AI backend.")
+    logger.info(f"Shutting down {settings.PROJECT_NAME}.")
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description="Production-grade AI/ML Mentor, Dynamic Knowledge Twin & Adaptive Roadmap platform.",
     version=settings.VERSION,
-    lifespan=lifespan
+    lifespan=lifespan,
+    docs_url="/docs" if settings.ENVIRONMENT != "production" else None,
+    redoc_url="/redoc" if settings.ENVIRONMENT != "production" else None
 )
 
+# 1. Observability & Security Headers Middleware
+app.add_middleware(SecurityAndObservabilityMiddleware)
+
+# 2. CORS Middleware with Strict Allowed Origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.BACKEND_CORS_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["X-Request-ID", "Retry-After"]
 )
 
-# Register all API endpoints
+# 3. Register All API Routers
+app.include_router(health_router)
 app.include_router(auth_router)
 app.include_router(knowledge_twin_router)
 app.include_router(skill_gap_router)
@@ -65,18 +76,13 @@ app.include_router(today_plan_router)
 @app.get("/")
 async def root():
     return {
-        "product": "GrowSkill AI",
+        "product": settings.PROJECT_NAME,
         "tagline": "Real AI Intelligence Core & Adaptive Knowledge Twin",
         "status": "online",
         "version": settings.VERSION,
-        "database": "PostgreSQL / SQLite with SQLAlchemy 2.0 Async",
-        "ai_engine": "Google Gemini / OpenAI LLM + pgvector RAG"
+        "environment": settings.ENVIRONMENT
     }
-
-@app.get("/api/health")
-async def health():
-    return {"status": "healthy", "service": "GrowSkill AI Core"}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=False)

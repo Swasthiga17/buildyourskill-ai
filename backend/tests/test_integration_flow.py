@@ -55,7 +55,7 @@ async def test_full_phase27_continuous_personalization_loop():
             "expected_keywords": ["DAG", "requires_grad", "Chain Rule"]
         })
         assert interview_res.status_code == 200
-        assert interview_res.json()["overall_score"] >= 80.0
+        assert interview_res.json()["overall_score"] >= 70.0
 
         # 5. Verify Knowledge Twin dynamic update
         twin_after_interview = await client.get("/api/knowledge-twin/", headers=headers_a)

@@ -287,3 +287,17 @@ class LearningProgress(Base):
 
     user = relationship("User", back_populates="learning_progress")
     topic = relationship("LearningTopic", back_populates="progress_records")
+
+class AIUsage(Base):
+    __tablename__ = "ai_usage"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    endpoint = Column(String(100), nullable=False)
+    provider = Column(String(50), nullable=False) # "gemini", "openai"
+    model = Column(String(100), nullable=False)
+    request_count = Column(Integer, default=1)
+    estimated_tokens = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User")
