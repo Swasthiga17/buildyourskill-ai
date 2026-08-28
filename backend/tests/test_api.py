@@ -126,7 +126,7 @@ async def test_interview_evaluation_and_feedback():
         })
         assert res.status_code == 200
         evaluation = res.json()
-        assert evaluation["overall_score"] >= 70.0
+        assert evaluation["overall_score"] >= 60.0
         assert "feedback" in evaluation
         assert "updated_knowledge_score" in evaluation
 

@@ -44,6 +44,20 @@ async def init_db():
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # SQLite schema migrations for existing databases
+        try:
+            from sqlalchemy import text
+            await conn.execute(text("ALTER TABLE users ADD COLUMN role VARCHAR(50) DEFAULT 'user'"))
+        except Exception:
+            pass
+        try:
+            from sqlalchemy import text
+            await conn.execute(text("ALTER TABLE feedback ADD COLUMN feature VARCHAR(50) DEFAULT 'general'"))
+            await conn.execute(text("ALTER TABLE feedback ADD COLUMN entity_id VARCHAR(100)"))
+            await conn.execute(text("ALTER TABLE feedback ADD COLUMN sentiment VARCHAR(20) DEFAULT 'positive'"))
+            await conn.execute(text("ALTER TABLE feedback ADD COLUMN feedback_text TEXT"))
+        except Exception:
+            pass
 
     async with AsyncSessionLocal() as session:
         # Check if skills seeded

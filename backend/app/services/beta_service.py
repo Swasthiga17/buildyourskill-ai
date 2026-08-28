@@ -93,14 +93,14 @@ class BetaService:
         if not invite:
             return {"valid": False, "reason": "Invalid or unrecognized invite code."}
 
+        if invite.used_count >= invite.max_uses:
+            return {"valid": False, "reason": "This invite code has reached its maximum uses."}
+
         if not invite.active:
             return {"valid": False, "reason": "This invite code has been deactivated."}
 
         if invite.expires_at < datetime.utcnow():
             return {"valid": False, "reason": "This invite code has expired."}
-
-        if invite.used_count >= invite.max_uses:
-            return {"valid": False, "reason": "This invite code has reached its maximum uses."}
 
         return {
             "valid": True,

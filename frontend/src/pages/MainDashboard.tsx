@@ -12,7 +12,8 @@ import {
   Network,
   BookOpen,
   Clock,
-import { Zap } from 'lucide-react';
+  Zap
+} from 'lucide-react';
 import { BetaOnboardingBanner } from '../components/BetaOnboardingBanner';
 
 export const MainDashboard: React.FC = () => {
