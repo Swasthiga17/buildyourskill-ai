@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Sprout,
+  Brain,
   LayoutDashboard,
   Network,
   UploadCloud,
@@ -35,14 +35,14 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({
   collapsed,
   onToggleCollapse,
-  user = { name: 'Swasthi B S', role: 'AI/ML Learner' },
+  user = { name: 'Swasthi B S', role: 'Staff AI/ML Candidate' },
   onOpenAuth
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/roadmap', label: 'My Roadmap', icon: Map },
     { path: '/study', label: 'Study & Notes 📚', icon: BookOpen },
     { path: '/knowledge-twin', label: 'Knowledge Twin', icon: Network },
@@ -55,59 +55,64 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { path: '/today-plan', label: "Today's Plan", icon: Compass },
     { path: '/interview', label: 'Interview Prep', icon: ShieldCheck },
     { path: '/career', label: 'Career Intel 💼', icon: Briefcase },
-    { path: '/settings', label: 'Settings ⚙️', icon: Settings }
+    { path: '/settings', label: 'Settings ⚙️', icon: Settings },
+    { path: '/admin', label: 'Admin Telemetry 🛡️', icon: ShieldCheck }
   ];
 
   return (
     <aside
-      className={`sticky top-0 h-screen flex flex-col justify-between bg-gradient-to-b from-[#FEF08A]/95 via-[#A7F3D0]/95 to-[#60A5FA]/95 backdrop-blur-xl shadow-2xl transition-all duration-300 z-30 select-none ${
-        collapsed ? 'w-20' : 'w-80'
+      className={`sticky top-0 h-screen flex flex-col justify-between bg-slate-900 border-r border-slate-800 text-slate-300 shadow-xl transition-all duration-300 z-30 select-none ${
+        collapsed ? 'w-20' : 'w-72'
       }`}
     >
       <div>
-        {/* Top Logo Header - Seamless (No border line below) */}
-        <div className="flex items-center justify-between h-20 px-6 bg-white/70 backdrop-blur-md">
+        {/* Top Logo Header */}
+        <div className="flex items-center justify-between h-20 px-5 border-b border-slate-800/80 bg-slate-950/50">
           <Link to="/" className="flex items-center space-x-3 group overflow-hidden">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-blue-600 p-0.5 shadow-md shrink-0">
-              <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
-                <Sprout className="w-7 h-7 text-emerald-600 group-hover:rotate-12 transition-transform duration-300" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-emerald-400 to-cyan-400 p-[2px] shadow-md shrink-0 group-hover:scale-105 transition-transform">
+              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+                <Brain className="w-5 h-5 text-emerald-400 group-hover:rotate-6 transition-transform" />
               </div>
             </div>
             {!collapsed && (
-              <span className="text-2xl font-black tracking-tight text-slate-900 truncate">
-                GrowSkill <span className="text-gradient-emerald">AI</span>
+              <span className="text-lg font-black tracking-tight text-white font-mono truncate">
+                BuildYourSkill <span className="text-emerald-400">AI</span>
               </span>
             )}
           </Link>
 
           <button
             onClick={onToggleCollapse}
-            className="p-2 rounded-xl bg-white/80 text-slate-800 hover:text-emerald-700 hover:bg-white transition-colors shadow-sm"
+            className="p-1.5 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
           >
-            {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+            {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
         </div>
 
         {/* Navigation Items */}
-        <nav className="p-4 space-y-2 overflow-y-auto max-h-[calc(100vh-270px)] custom-scrollbar">
+        <nav className="p-3 space-y-1.5 overflow-y-auto max-h-[calc(100vh-250px)] custom-scrollbar">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.path || (item.path === '/study' && location.pathname.startsWith('/study'));
+            const isActive =
+              location.pathname === item.path ||
+              (item.path === '/' && location.pathname === '/dashboard') ||
+              (item.path === '/study' && location.pathname.startsWith('/study'));
+
             return (
               <Link
                 key={item.path}
                 to={item.path}
                 title={collapsed ? item.label : undefined}
-                className={`flex items-center space-x-4 px-4 py-3.5 rounded-2xl text-base font-bold transition-all duration-200 ${
+                className={`flex items-center space-x-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-150 ${
                   isActive
-                    ? 'bg-white text-slate-900 shadow-md font-black scale-[1.02]'
-                    : 'text-slate-800 hover:text-slate-950 hover:bg-white/60 font-extrabold'
+                    ? 'bg-indigo-600 text-white font-black shadow-md shadow-indigo-600/30'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
                 }`}
               >
-                <Icon className={`w-6 h-6 shrink-0 ${isActive ? 'text-emerald-600' : 'text-slate-700'}`} />
+                <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
                 {!collapsed && <span className="truncate">{item.label}</span>}
                 {!collapsed && isActive && (
-                  <span className="ml-auto w-3 h-3 rounded-full bg-emerald-500 shadow-sm animate-pulse" />
+                  <span className="ml-auto w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-sm" />
                 )}
               </Link>
             );
@@ -115,50 +120,45 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </nav>
       </div>
 
-      {/* Bottom Section: Learning Streak & Profile - Seamless (No border line above) */}
-      <div className="p-4 space-y-3 bg-white/40 backdrop-blur-md">
+      {/* Bottom Section: Learning Streak & Profile */}
+      <div className="p-4 border-t border-slate-800/80 bg-slate-950/40">
         {!collapsed && (
-          <div className="p-3.5 rounded-2xl bg-amber-100/90 border border-amber-300 flex items-center justify-between text-sm font-mono shadow-sm">
-            <div className="flex items-center space-x-2.5">
-              <Flame className="w-6 h-6 text-amber-500 fill-amber-500 animate-pulse" />
-              <span className="font-extrabold text-amber-950 text-sm">12 Days Streak!</span>
+          <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/50 space-y-2 mb-3">
+            <div className="flex items-center justify-between text-xs font-mono">
+              <span className="text-slate-400 flex items-center gap-1">
+                <Flame className="w-3.5 h-3.5 text-amber-400" /> Day Streak
+              </span>
+              <span className="font-bold text-amber-300">7 Days 🔥</span>
             </div>
-            <span className="text-xs px-3 py-1 rounded-full bg-amber-300 text-amber-950 font-black shadow-xs">+35 XP</span>
+            <div className="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+              <div className="bg-gradient-to-r from-amber-400 to-emerald-400 h-full w-[70%]" />
+            </div>
           </div>
         )}
 
-        {!collapsed ? (
-          <div className="flex items-center justify-between p-3 rounded-2xl bg-white/90 shadow-sm">
-            <div className="flex items-center space-x-3.5 truncate">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-400 via-emerald-500 to-blue-600 p-0.5 shrink-0 shadow-sm">
-                <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-sm font-black text-emerald-700">
-                  SB
-                </div>
-              </div>
-              <div className="flex flex-col truncate font-mono">
-                <span className="font-extrabold text-slate-900 text-sm truncate">{user.name}</span>
-                <span className="text-slate-600 text-xs font-semibold truncate">{user.role}</span>
-              </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3 overflow-hidden">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs shrink-0">
+              {user.name.charAt(0)}
             </div>
+            {!collapsed && (
+              <div className="flex flex-col min-w-0">
+                <span className="text-xs font-bold text-white truncate">{user.name}</span>
+                <span className="text-[10px] text-slate-400 truncate">{user.role}</span>
+              </div>
+            )}
+          </div>
+
+          {!collapsed && (
             <button
-              onClick={() => {
-                if (onOpenAuth) onOpenAuth();
-                else navigate('/login');
-              }}
-              className="p-2 text-slate-600 hover:text-emerald-700 transition-colors"
+              onClick={onOpenAuth}
+              title="Sign In / Switch Profile"
+              className="p-1.5 text-slate-400 hover:text-white transition-colors"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-4 h-4" />
             </button>
-          </div>
-        ) : (
-          <div className="flex justify-center">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-400 via-emerald-500 to-blue-600 p-0.5 shadow-sm">
-              <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-sm font-black text-emerald-700">
-                SB
-              </div>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </aside>
   );

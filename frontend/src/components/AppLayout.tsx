@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
-import { Sprout, LogIn, RefreshCw, Sparkles, X, Send, Bot } from 'lucide-react';
+import { Brain, LogIn, Sparkles, X, Send, Bot, ShieldCheck } from 'lucide-react';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -23,7 +23,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
     }
   ]);
 
-  const publicRoutes = ['/', '/login'];
+  const publicRoutes = ['/landing', '/login'];
   const isPublicPage = publicRoutes.includes(location.pathname);
 
   const handleCopilotSend = (shortcutText?: string) => {
@@ -39,7 +39,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
         ...newMsgs,
         {
           sender: 'ai',
-          text: `🤖 AI Co-pilot: Based on your Knowledge Twin & current page (${location.pathname}), I recommend focusing on MLOps & Model Evaluation!`
+          text: `🤖 AI Co-pilot: Grounded on your Knowledge Twin & current view (${location.pathname}), I recommend reviewing your active technical gaps!`
         }
       ]);
     }, 600);
@@ -48,14 +48,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
   if (isPublicPage) {
     if (location.pathname === '/login') {
       return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-center selection:bg-indigo-500 selection:text-white">
+        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center selection:bg-indigo-500 selection:text-white">
           <main className="flex-grow flex flex-col justify-center">{children}</main>
         </div>
       );
     }
 
     return (
-      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
@@ -64,7 +64,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex selection:bg-emerald-500 selection:text-slate-950 relative">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex selection:bg-indigo-500 selection:text-white relative">
       {/* Sidebar Navigation */}
       <Sidebar
         collapsed={sidebarCollapsed}
@@ -73,110 +73,92 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
       />
 
       {/* Main Content Workspace Area */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen justify-between bg-gradient-to-br from-[#FEF08A] via-[#A7F3D0] to-[#60A5FA]">
-        {/* Top Header Bar for App Workspace - Styled matching sidebar gradient */}
-        <header className="sticky top-0 z-20 h-20 bg-gradient-to-r from-[#FEF08A]/95 via-[#A7F3D0]/95 to-[#60A5FA]/95 backdrop-blur-xl px-6 sm:px-10 flex items-center justify-between shadow-md">
-          {/* Breadcrumb / Status */}
-          <div className="flex items-center space-x-4">
-            <span className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-900 text-sm font-mono font-bold">
-              <Sprout className="w-4 h-4 text-emerald-600 animate-bounce" />
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen justify-between bg-slate-950">
+        {/* Top Header Bar for App Workspace */}
+        <header className="sticky top-0 z-20 h-16 bg-slate-900/80 backdrop-blur-xl border-b border-slate-800 px-6 sm:px-8 flex items-center justify-between shadow-sm">
+          {/* Status Badge */}
+          <div className="flex items-center space-x-3">
+            <span className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>AI Twin: Active</span>
             </span>
-            <span className="text-slate-800 text-sm font-mono font-bold hidden sm:inline">Target: AI/ML Engineer</span>
+            <span className="text-slate-400 text-xs font-mono font-medium hidden sm:inline">
+              Target: Staff AI/ML Engineer
+            </span>
           </div>
 
           {/* Quick Controls */}
-          <div className="flex items-center space-x-4 text-sm font-mono font-bold">
+          <div className="flex items-center space-x-3">
             <button
               onClick={onOpenAuth}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-emerald-600 to-blue-600 text-white font-black flex items-center space-x-2 shadow-md hover:scale-105 transition-all text-xs sm:text-sm"
+              className="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center space-x-2 shadow-sm text-xs font-mono transition-all"
             >
-              <LogIn className="w-4 h-4" />
+              <LogIn className="w-3.5 h-3.5" />
               <span>Sign In</span>
             </button>
           </div>
         </header>
 
-        {/* Page Content Container - Expansive 1800px Width */}
-        <main className="flex-1 p-4 sm:p-8 lg:p-10 max-w-[1800px] w-full mx-auto">{children}</main>
+        {/* Page Content Container */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1800px] w-full mx-auto">{children}</main>
 
         <Footer />
       </div>
 
-      {/* ⭐ Persistent "Ask Mentor" Floating Co-pilot Button & Slide-over Panel */}
+      {/* Floating Ask Mentor Co-pilot */}
       <div className="fixed bottom-6 right-6 z-50 select-none">
         {!isCopilotOpen ? (
           <button
             onClick={() => setIsCopilotOpen(true)}
-            className="px-6 py-4 rounded-full bg-gradient-to-r from-amber-500 via-emerald-600 to-blue-600 text-white font-mono font-black text-sm flex items-center space-x-2.5 shadow-2xl hover:scale-105 transition-all border-2 border-white"
+            className="px-5 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-mono font-bold text-xs flex items-center space-x-2 shadow-xl hover:scale-105 transition-all border border-indigo-400/30"
           >
-            <Sparkles className="w-5 h-5 text-amber-300 animate-spin" />
-            <span>✨ Ask Mentor</span>
+            <Sparkles className="w-4 h-4 text-amber-300 animate-spin" />
+            <span>Ask Mentor</span>
           </button>
         ) : (
-          <div className="w-96 sm:w-[440px] rounded-3xl bg-white/95 backdrop-blur-xl border-2 border-emerald-400 p-6 space-y-4 shadow-2xl font-mono text-xs sm:text-sm text-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <div className="flex items-center space-x-2.5">
-                <Bot className="w-6 h-6 text-emerald-600" />
-                <span className="font-black text-base">AI Mentor Co-pilot</span>
+          <div className="w-96 sm:w-[420px] rounded-3xl bg-slate-900 border border-slate-700 p-5 space-y-4 shadow-2xl font-mono text-xs text-slate-100">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center space-x-2">
+                <Bot className="w-5 h-5 text-emerald-400" />
+                <span className="font-bold text-sm text-white">AI Mentor Co-pilot</span>
               </div>
-              <button onClick={() => setIsCopilotOpen(false)} className="p-1 text-slate-500 hover:text-slate-900 transition-colors">
-                <X className="w-6 h-6" />
+              <button
+                onClick={() => setIsCopilotOpen(false)}
+                className="p-1 text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Chat Area */}
-            <div className="space-y-3.5 max-h-72 overflow-y-auto custom-scrollbar p-1">
+            {/* Chat Messages */}
+            <div className="space-y-3 max-h-72 overflow-y-auto custom-scrollbar p-1">
               {copilotMessages.map((m, idx) => (
-                <div key={idx} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div
-                    className={`p-3.5 rounded-xl max-w-[88%] text-xs sm:text-sm leading-relaxed ${
-                      m.sender === 'user'
-                        ? 'bg-gradient-to-r from-amber-500 via-emerald-600 to-blue-600 text-white font-bold'
-                        : 'bg-emerald-50 text-slate-900 border border-emerald-300 font-medium'
-                    }`}
-                  >
-                    {m.text}
-                  </div>
+                <div
+                  key={idx}
+                  className={`p-3 rounded-2xl ${
+                    m.sender === 'user'
+                      ? 'bg-indigo-600 text-white ml-6 text-right'
+                      : 'bg-slate-800/80 border border-slate-700 text-slate-200 mr-6'
+                  }`}
+                >
+                  <p className="leading-relaxed">{m.text}</p>
                 </div>
               ))}
             </div>
 
-            {/* Shortcut Chips */}
-            <div className="flex flex-wrap gap-2 pt-1">
-              <button
-                onClick={() => handleCopilotSend('Explain this concept')}
-                className="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 hover:bg-emerald-50 hover:border-emerald-300 transition-all"
-              >
-                Explain this
-              </button>
-              <button
-                onClick={() => handleCopilotSend('Give me a hint')}
-                className="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 hover:bg-emerald-50 hover:border-emerald-300 transition-all"
-              >
-                Give me a hint
-              </button>
-              <button
-                onClick={() => handleCopilotSend("What's next?")}
-                className="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 hover:bg-emerald-50 hover:border-emerald-300 transition-all"
-              >
-                What's next?
-              </button>
-            </div>
-
-            {/* Input Bar */}
-            <div className="flex items-center space-x-2 pt-1">
+            {/* Input Form */}
+            <div className="flex items-center space-x-2 pt-2 border-t border-slate-800">
               <input
                 type="text"
                 value={copilotQuery}
                 onChange={(e) => setCopilotQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleCopilotSend()}
-                placeholder="Ask co-pilot..."
-                className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-emerald-500"
+                placeholder="Ask technical question..."
+                className="flex-1 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
               />
               <button
                 onClick={() => handleCopilotSend()}
-                className="p-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-emerald-600 text-white font-bold hover:scale-105 transition-all"
+                className="p-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
               >
                 <Send className="w-4 h-4" />
               </button>

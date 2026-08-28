@@ -46,9 +46,10 @@ export const AppContent: React.FC<{ onTriggerSplash: () => void }> = ({ onTrigge
       onOpenAuth={() => navigate('/login')}
     >
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<MainDashboard />} />
         <Route path="/dashboard" element={<MainDashboard />} />
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/knowledge-twin" element={<KnowledgeTwin />} />
         <Route path="/import-knowledge" element={<ImportKnowledge />} />
         <Route path="/learn-anything" element={<LearnFromAnythingPage />} />
