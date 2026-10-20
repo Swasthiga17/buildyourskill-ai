@@ -85,7 +85,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search concepts, skills, roadmaps, code..."
-              className="w-full pl-9 pr-4 py-2 rounded-xl bg-white/95 border border-emerald-300/60 text-xs sm:text-sm font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-500/25 transition-all shadow-2xs"
+              className="w-full pl-9 pr-4 py-2 rounded-xl bg-white/95 border border-emerald-300/60 text-sm font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-500/25 transition-all shadow-2xs"
             />
           </div>
 
@@ -108,12 +108,12 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
 
             {/* Profile Avatar & Info */}
             <div className="flex items-center space-x-2.5 pl-3 border-l border-emerald-200">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs ring-1 ring-emerald-400/60">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-xs ring-1 ring-emerald-400/60">
                 B
               </div>
               <div className="hidden sm:flex flex-col text-left">
-                <span className="text-xs font-black text-slate-900 leading-tight">Buddy</span>
-                <span className="text-[10px] font-bold text-emerald-700 leading-tight">AI/ML Engineer</span>
+                <span className="text-sm font-bold text-slate-900 leading-tight">Buddy</span>
+                <span className="text-xs font-semibold text-emerald-700 leading-tight">AI/ML Engineer</span>
               </div>
             </div>
           </div>
@@ -130,7 +130,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
         {!isCopilotOpen ? (
           <button
             onClick={() => setIsCopilotOpen(true)}
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-emerald-500 to-blue-600 hover:from-amber-400 hover:to-blue-500 text-white font-sans font-bold text-xs sm:text-sm flex items-center space-x-2 shadow-xl shadow-emerald-600/30 hover:scale-105 transition-all ring-1 ring-white/60"
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-emerald-500 to-blue-600 hover:from-amber-400 hover:to-blue-500 text-white font-sans font-bold text-sm flex items-center space-x-2 shadow-xl shadow-emerald-600/30 hover:scale-105 transition-all ring-1 ring-white/60"
           >
             <Sparkles className="w-4 h-4 text-yellow-200 animate-spin stroke-[2]" style={{ animationDuration: '6s' }} />
             <span>AI Mentor</span>
@@ -142,7 +142,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
                 <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 font-bold">
                   <Bot className="w-5 h-5" />
                 </div>
-                <span className="font-black text-base text-slate-900">AI Mentor Co-pilot</span>
+                <span className="font-bold text-xl text-slate-900">AI Mentor Co-pilot</span>
               </div>
               <button
                 onClick={() => setIsCopilotOpen(false)}
