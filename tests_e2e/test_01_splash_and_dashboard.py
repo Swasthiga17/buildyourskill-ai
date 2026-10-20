@@ -12,21 +12,23 @@ class TestSplashAndDashboard:
     """Tests for the initial Splash Screen and the Main Dashboard."""
 
     def test_splash_screen_auto_transitions_or_dismisses(self, driver, base_url):
-        """Verify the 1.2s splash screen appears and can be dismissed smoothly."""
+        """Verify the 3s splash screen appears, can be dismissed, and transitions to login or dashboard."""
         driver.get(f"{base_url}/")
 
         # Either splash screen is visible or quickly auto-dismisses
         try:
-            splash = WebDriverWait(driver, 2).until(
+            splash = WebDriverWait(driver, 4).until(
                 EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'GrowSkill')]"))
             )
             splash.click()
         except Exception:
             pass
 
-        # Verify main dashboard appears
-        dashboard = DashboardPage(driver, base_url)
-        assert dashboard.is_dashboard_loaded(), "Dashboard failed to load after splash screen"
+        # Verify page transitions after splash screen (to Login page or Dashboard)
+        time.sleep(0.5)
+        is_login = "/login" in driver.current_url or len(driver.find_elements(By.CSS_SELECTOR, "button[type='submit']")) > 0
+        is_dashboard = "/dashboard" in driver.current_url or len(driver.find_elements(By.XPATH, "//h1[contains(., 'Welcome back')]")) > 0
+        assert is_login or is_dashboard, "Neither Login nor Dashboard appeared after splash screen"
 
     def test_dashboard_welcome_header(self, driver, base_url):
         """Verify main greeting and student status on the dashboard."""

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { SplashScreen } from './components/SplashScreen';
 import { AppLayout } from './components/AppLayout';
 import { BetaFeedbackModal } from './components/BetaFeedbackModal';
@@ -37,6 +37,15 @@ import { StageSystemDesignPage } from './pages/roadmap/StageSystemDesignPage';
 import { StudyHub } from './pages/study/StudyHub';
 import { StageNotesView } from './pages/study/StageNotesView';
 
+// Route for root /: directs unauthenticated users to /login and authenticated users to /dashboard
+const RootRoute: React.FC = () => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    return <MainDashboard />;
+  }
+  return <Navigate to="/login" replace />;
+};
+
 export const AppContent: React.FC<{ onTriggerSplash: () => void }> = ({ onTriggerSplash }) => {
   const navigate = useNavigate();
 
@@ -46,7 +55,7 @@ export const AppContent: React.FC<{ onTriggerSplash: () => void }> = ({ onTrigge
       onOpenAuth={() => navigate('/login')}
     >
       <Routes>
-        <Route path="/" element={<MainDashboard />} />
+        <Route path="/" element={<RootRoute />} />
         <Route path="/dashboard" element={<MainDashboard />} />
         <Route path="/landing" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
