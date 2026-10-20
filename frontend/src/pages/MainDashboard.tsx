@@ -23,60 +23,60 @@ export const MainDashboard: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="space-y-10 select-none text-slate-900 font-sans">
+    <div className="space-y-6 select-none text-slate-900 font-sans">
       {/* Beta Onboarding Checklist */}
       <BetaOnboardingBanner />
 
       {/* Top Greeting Header Row */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-2">
-        <div className="space-y-2.5">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight flex items-center gap-3.5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-1">
+        <div className="space-y-1">
+          <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
             <span>Welcome back, Buddy!</span>
             <span className="inline-block hover:rotate-12 transition-transform cursor-pointer">👋</span>
           </h1>
-          <p className="text-lg sm:text-xl text-slate-700 font-extrabold max-w-3xl">
+          <p className="text-xs text-slate-600 font-medium max-w-2xl">
             Ready to continue your personalized learning journey toward becoming an AI/ML Engineer?
           </p>
         </div>
 
-        {/* Streak & XP Badges in Yellow + Blue */}
-        <div className="flex items-center gap-5 shrink-0">
-          <div className="flex items-center gap-3.5 px-6 py-4 rounded-3xl bg-white/95 border-2 border-amber-400 shadow-xl shadow-amber-500/15 backdrop-blur-md">
-            <span className="text-3xl sm:text-4xl font-black text-amber-600">7</span>
-            <span className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
-              <Flame className="w-6 h-6 text-amber-500 fill-amber-400 animate-pulse stroke-[2.2]" /> Day Streak
+        {/* Streak & XP Badges */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/95 border border-amber-300 shadow-sm shadow-amber-500/10 backdrop-blur-md">
+            <span className="text-base font-black text-amber-600">7</span>
+            <span className="text-xs font-bold text-slate-800 flex items-center gap-1">
+              <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-400 stroke-[2]" /> Day Streak
             </span>
           </div>
 
-          <div className="flex items-center gap-3.5 px-6 py-4 rounded-3xl bg-white/95 border-2 border-blue-400 shadow-xl shadow-blue-500/15 backdrop-blur-md">
-            <span className="text-3xl sm:text-4xl font-black text-blue-600">950</span>
-            <span className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
-              <Award className="w-6 h-6 text-blue-600 fill-blue-400/30 stroke-[2.2]" /> XP Earned
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/95 border border-blue-300 shadow-sm shadow-blue-500/10 backdrop-blur-md">
+            <span className="text-base font-black text-blue-600">950</span>
+            <span className="text-xs font-bold text-slate-800 flex items-center gap-1">
+              <Award className="w-3.5 h-3.5 text-blue-600 fill-blue-400/30 stroke-[2]" /> XP Earned
             </span>
           </div>
         </div>
       </div>
 
       {/* Row 1: Knowledge Twin Overview (Left) + Top Skill Gaps (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
         {/* Knowledge Twin Overview Card */}
-        <div className="lg:col-span-8 p-8 sm:p-10 rounded-3xl bg-white/90 backdrop-blur-2xl border-2 border-emerald-400/40 shadow-xl shadow-emerald-500/10 hover:border-emerald-500/60 hover:shadow-2xl transition-all space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-emerald-200/50 pb-5">
-            <div className="flex items-center gap-3.5">
-              <div className="p-3 rounded-2xl bg-emerald-100 border-2 border-emerald-400 text-emerald-700">
-                <Brain className="w-7 h-7 stroke-[2.5]" />
+        <div className="lg:col-span-8 p-5 sm:p-6 rounded-2xl bg-white/90 backdrop-blur-2xl border border-emerald-300/60 shadow-lg shadow-emerald-500/5 hover:border-emerald-400/80 transition-all space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-100 pb-3">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-700">
+                <Brain className="w-4.5 h-4.5 stroke-[2]" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Knowledge Twin Overview</h2>
+              <h2 className="text-base font-bold text-slate-900 tracking-tight">Knowledge Twin Overview</h2>
             </div>
-            <span className="text-base text-slate-600 font-bold">Last updated: Today 2:30 AM</span>
+            <span className="text-[11px] text-slate-500 font-medium">Last updated: Today 2:30 AM</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-8 items-center">
-            {/* Circular Gauge with Yellow -> Green -> Blue Gradient */}
-            <div className="sm:col-span-5 flex flex-col items-center justify-center p-2">
-              <div className="relative w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center">
-                <svg className="w-full h-full transform -rotate-90 drop-shadow-[0_6px_16px_rgba(16,185,129,0.35)]" viewBox="0 0 100 100">
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+            {/* Circular Gauge */}
+            <div className="sm:col-span-5 flex flex-col items-center justify-center p-1">
+              <div className="relative w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center">
+                <svg className="w-full h-full transform -rotate-90 drop-shadow-[0_4px_10px_rgba(16,185,129,0.25)]" viewBox="0 0 100 100">
                   <defs>
                     <linearGradient id="ygbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stopColor="#F59E0B" />
@@ -89,7 +89,7 @@ export const MainDashboard: React.FC = () => {
                     cy="50"
                     r="39"
                     className="text-slate-100"
-                    strokeWidth="11"
+                    strokeWidth="9"
                     stroke="currentColor"
                     fill="transparent"
                   />
@@ -98,7 +98,7 @@ export const MainDashboard: React.FC = () => {
                     cy="50"
                     r="39"
                     stroke="url(#ygbGrad)"
-                    strokeWidth="11"
+                    strokeWidth="9"
                     strokeDasharray={245}
                     strokeDashoffset={245 * (1 - 0.78)}
                     strokeLinecap="round"
@@ -106,123 +106,123 @@ export const MainDashboard: React.FC = () => {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <span className="text-5xl sm:text-6xl font-black text-slate-900 tracking-tight">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                     78%
                   </span>
-                  <span className="text-sm font-black text-emerald-700 uppercase tracking-widest mt-1">
+                  <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider mt-0.5">
                     Overall Score
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Skill Bars with Vibrant Yellow, Green, and Blue gradients */}
-            <div className="sm:col-span-7 space-y-5">
+            {/* Skill Bars */}
+            <div className="sm:col-span-7 space-y-3.5">
               <div>
-                <div className="flex justify-between text-base sm:text-lg font-bold text-slate-900 mb-2">
-                  <span className="flex items-center gap-2.5">
-                    <span className="w-3.5 h-3.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500" />
+                <div className="flex justify-between text-xs sm:text-sm font-semibold text-slate-800 mb-1">
+                  <span className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-xs" />
                     Python
                   </span>
-                  <span className="font-black text-emerald-600 text-lg sm:text-xl">92%</span>
+                  <span className="font-bold text-emerald-600 text-xs sm:text-sm">92%</span>
                 </div>
-                <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
-                  <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full w-[92%] shadow-md shadow-emerald-500/30" />
+                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-200">
+                  <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full w-[92%]" />
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-base sm:text-lg font-bold text-slate-900 mb-2">
-                  <span className="flex items-center gap-2.5">
-                    <span className="w-3.5 h-3.5 rounded-full bg-blue-600 shadow-sm shadow-blue-600" />
+                <div className="flex justify-between text-xs sm:text-sm font-semibold text-slate-800 mb-1">
+                  <span className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-xs" />
                     Machine Learning
                   </span>
-                  <span className="font-black text-blue-600 text-lg sm:text-xl">78%</span>
+                  <span className="font-bold text-blue-600 text-xs sm:text-sm">78%</span>
                 </div>
-                <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
-                  <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full w-[78%] shadow-md shadow-blue-500/30" />
+                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-200">
+                  <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full w-[78%]" />
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-base sm:text-lg font-bold text-slate-900 mb-2">
-                  <span className="flex items-center gap-2.5">
-                    <span className="w-3.5 h-3.5 rounded-full bg-amber-500 shadow-sm shadow-amber-500" />
+                <div className="flex justify-between text-xs sm:text-sm font-semibold text-slate-800 mb-1">
+                  <span className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs" />
                     Deep Learning
                   </span>
-                  <span className="font-black text-amber-600 text-lg sm:text-xl">53%</span>
+                  <span className="font-bold text-amber-600 text-xs sm:text-sm">53%</span>
                 </div>
-                <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
-                  <div className="bg-gradient-to-r from-amber-400 to-yellow-500 h-full rounded-full w-[53%] shadow-md shadow-amber-500/30" />
+                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-200">
+                  <div className="bg-gradient-to-r from-amber-400 to-yellow-500 h-full rounded-full w-[53%]" />
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-base sm:text-lg font-bold text-slate-900 mb-2">
-                  <span className="flex items-center gap-2.5">
-                    <span className="w-3.5 h-3.5 rounded-full bg-teal-500 shadow-sm shadow-teal-500" />
+                <div className="flex justify-between text-xs sm:text-sm font-semibold text-slate-800 mb-1">
+                  <span className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-teal-500 shadow-xs" />
                     RAG & Vector Search
                   </span>
-                  <span className="font-black text-teal-700 text-lg sm:text-xl">61%</span>
+                  <span className="font-bold text-teal-700 text-xs sm:text-sm">61%</span>
                 </div>
-                <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
-                  <div className="bg-gradient-to-r from-teal-500 via-emerald-500 to-blue-500 h-full rounded-full w-[61%] shadow-md shadow-teal-500/30" />
+                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-200">
+                  <div className="bg-gradient-to-r from-teal-500 via-emerald-500 to-blue-500 h-full rounded-full w-[61%]" />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-1">
             <Link
               to="/knowledge-twin"
-              className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-emerald-500 to-blue-600 hover:from-amber-400 hover:to-blue-500 text-white text-base sm:text-lg font-black shadow-lg shadow-emerald-600/30 transition-all inline-flex items-center gap-3 hover:scale-[1.02]"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-emerald-500 to-blue-600 hover:from-amber-400 hover:to-blue-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-600/20 transition-all inline-flex items-center gap-2 hover:scale-[1.01]"
             >
               <span>View Full Knowledge Twin</span>
-              <ArrowRight className="w-5 h-5 stroke-[3]" />
+              <ArrowRight className="w-4 h-4 stroke-[2.5]" />
             </Link>
           </div>
         </div>
 
         {/* Top Skill Gaps Card in YGB Theme */}
-        <div className="lg:col-span-4 p-8 sm:p-10 rounded-3xl bg-white/90 backdrop-blur-2xl border-2 border-emerald-400/40 shadow-xl shadow-emerald-500/10 hover:border-emerald-500/60 hover:shadow-2xl transition-all space-y-7 flex flex-col justify-between">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b-2 border-emerald-200/50 pb-5">
-              <div className="flex items-center gap-3">
-                <Target className="w-6 h-6 text-amber-500 stroke-[2.5]" />
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Top Skill Gaps</h2>
+        <div className="lg:col-span-4 p-5 sm:p-6 rounded-2xl bg-white/90 backdrop-blur-2xl border border-emerald-400/40 shadow-lg shadow-emerald-500/5 hover:border-emerald-500/60 transition-all space-y-5 flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between border-b border-emerald-200/50 pb-3">
+              <div className="flex items-center gap-2">
+                <Target className="w-5 h-5 text-amber-500 stroke-[2.5]" />
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900">Top Skill Gaps</h2>
               </div>
-              <span className="text-sm font-black text-amber-900 bg-amber-100 px-3.5 py-1.5 rounded-full border-2 border-amber-300 flex items-center gap-1.5">
-                <AlertTriangle className="w-4 h-4 stroke-[2.5]" /> Action Required
+              <span className="text-xs font-bold text-amber-900 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 flex items-center gap-1">
+                <AlertTriangle className="w-3.5 h-3.5 stroke-[2.5]" /> Action Required
               </span>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4.5 rounded-2xl bg-amber-50/95 border-2 border-amber-300 hover:bg-amber-100/70 transition-colors">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-amber-50/95 border border-amber-300 hover:bg-amber-100/70 transition-colors">
                 <div>
-                  <h4 className="text-base sm:text-lg font-black text-slate-900">PyTorch</h4>
-                  <p className="text-sm text-slate-600 font-bold mt-0.5">Autograd & backward DAGs</p>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900">PyTorch</h4>
+                  <p className="text-xs text-slate-600 font-medium mt-0.5">Autograd & backward DAGs</p>
                 </div>
-                <span className="px-3.5 py-2 rounded-xl bg-amber-200 border-2 border-amber-400 text-amber-950 font-black text-base sm:text-lg shadow-xs">
+                <span className="px-2.5 py-1 rounded-lg bg-amber-200 border border-amber-400 text-amber-950 font-bold text-xs sm:text-sm shadow-xs">
                   48%
                 </span>
               </div>
 
-              <div className="flex items-center justify-between p-4.5 rounded-2xl bg-blue-50/95 border-2 border-blue-300 hover:bg-blue-100/70 transition-colors">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-blue-50/95 border border-blue-300 hover:bg-blue-100/70 transition-colors">
                 <div>
-                  <h4 className="text-base sm:text-lg font-black text-slate-900">Model Deployment</h4>
-                  <p className="text-sm text-slate-600 font-bold mt-0.5">FastAPI & Docker containerization</p>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900">Model Deployment</h4>
+                  <p className="text-xs text-slate-600 font-medium mt-0.5">FastAPI & Docker containerization</p>
                 </div>
-                <span className="px-3.5 py-2 rounded-xl bg-blue-200 border-2 border-blue-400 text-blue-950 font-black text-base sm:text-lg shadow-xs">
+                <span className="px-2.5 py-1 rounded-lg bg-blue-200 border border-blue-400 text-blue-950 font-bold text-xs sm:text-sm shadow-xs">
                   35%
                 </span>
               </div>
 
-              <div className="flex items-center justify-between p-4.5 rounded-2xl bg-emerald-50/95 border-2 border-emerald-300 hover:bg-emerald-100/70 transition-colors">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50/95 border border-emerald-300 hover:bg-emerald-100/70 transition-colors">
                 <div>
-                  <h4 className="text-base sm:text-lg font-black text-slate-900">Attention Mechanism</h4>
-                  <p className="text-sm text-slate-600 font-bold mt-0.5">Multi-head query-key-value math</p>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900">Attention Mechanism</h4>
+                  <p className="text-xs text-slate-600 font-medium mt-0.5">Multi-head query-key-value math</p>
                 </div>
-                <span className="px-3.5 py-2 rounded-xl bg-emerald-200 border-2 border-emerald-400 text-emerald-950 font-black text-base sm:text-lg shadow-xs">
+                <span className="px-2.5 py-1 rounded-lg bg-emerald-200 border border-emerald-400 text-emerald-950 font-bold text-xs sm:text-sm shadow-xs">
                   50%
                 </span>
               </div>
@@ -231,7 +231,7 @@ export const MainDashboard: React.FC = () => {
 
           <Link
             to="/roadmap"
-            className="text-center w-full py-4 rounded-2xl bg-white hover:bg-emerald-50 border-2 border-emerald-400 text-emerald-800 hover:text-emerald-950 text-base sm:text-lg font-black transition-all shadow-md mt-4 block"
+            className="text-center w-full py-2.5 rounded-xl bg-white hover:bg-emerald-50 border border-emerald-400 text-emerald-800 hover:text-emerald-950 text-xs sm:text-sm font-bold transition-all shadow-xs mt-3 block"
           >
             View All Gaps →
           </Link>
@@ -240,85 +240,85 @@ export const MainDashboard: React.FC = () => {
       </div>
 
       {/* Row 2: Today's Plan (Left) + Roadmap Progress (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
         
         {/* Today's Plan Card in YGB Theme */}
-        <div className="lg:col-span-8 p-8 sm:p-10 rounded-3xl bg-white/90 backdrop-blur-2xl border-2 border-emerald-400/40 shadow-xl shadow-emerald-500/10 hover:border-emerald-500/60 hover:shadow-2xl transition-all space-y-7">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-emerald-200/50 pb-5">
-            <div className="flex items-center gap-3.5">
-              <div className="p-3 rounded-2xl bg-blue-100 border-2 border-blue-300 text-blue-700">
-                <Zap className="w-7 h-7 stroke-[2.5]" />
+        <div className="lg:col-span-8 p-5 sm:p-6 rounded-2xl bg-white/90 backdrop-blur-2xl border border-emerald-400/40 shadow-lg shadow-emerald-500/5 hover:border-emerald-500/60 transition-all space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-200/50 pb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-xl bg-blue-100 border border-blue-300 text-blue-700">
+                <Zap className="w-5 h-5 stroke-[2.5]" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Today's Plan</h2>
-              <span className="px-3.5 py-1.5 rounded-full bg-blue-100 text-blue-900 text-sm font-black border-2 border-blue-300">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900">Today's Plan</h2>
+              <span className="px-2.5 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-bold border border-blue-300">
                 2h 15m Estimated
               </span>
             </div>
-            <span className="text-base text-slate-700 font-bold">3 Tasks Remaining</span>
+            <span className="text-xs sm:text-sm text-slate-700 font-semibold">3 Tasks Remaining</span>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {/* Task 1: Done in Green */}
-            <div className="p-4.5 rounded-2xl bg-emerald-50/95 border-2 border-emerald-400/80 flex items-center justify-between transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center text-base font-black shadow-md">
+            <div className="p-3.5 rounded-xl bg-emerald-50/95 border border-emerald-400/80 flex items-center justify-between transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold shadow-xs">
                   ✓
                 </div>
                 <div>
-                  <h4 className="text-base sm:text-lg font-black text-slate-900">PyTorch Tensor Deep Dive</h4>
-                  <span className="text-sm text-emerald-800 font-extrabold">Conceptual foundation & broadcasting</span>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900">PyTorch Tensor Deep Dive</h4>
+                  <span className="text-xs text-emerald-800 font-semibold">Conceptual foundation & broadcasting</span>
                 </div>
               </div>
-              <span className="text-base font-black text-emerald-700">30m</span>
+              <span className="text-xs sm:text-sm font-bold text-emerald-700">30m</span>
             </div>
 
             {/* Task 2: Active in Yellow */}
-            <div className="p-4.5 rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-100 border-2 border-amber-400 shadow-md shadow-amber-500/15 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-amber-500 text-white flex items-center justify-center text-base font-black shadow-md shadow-amber-500/30 animate-pulse">
+            <div className="p-3.5 rounded-xl bg-gradient-to-r from-amber-50 to-yellow-100 border border-amber-400 shadow-xs flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shadow-xs animate-pulse">
                   ⚡
                 </div>
                 <div>
-                  <h4 className="text-base sm:text-lg font-black text-slate-900">Autograd Practice Task</h4>
-                  <span className="text-sm text-amber-900 font-extrabold">Active coding in Python sandbox</span>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900">Autograd Practice Task</h4>
+                  <span className="text-xs text-amber-900 font-semibold">Active coding in Python sandbox</span>
                 </div>
               </div>
-              <span className="text-base font-black text-amber-800">45m</span>
+              <span className="text-xs sm:text-sm font-bold text-amber-800">45m</span>
             </div>
 
             {/* Task 3 */}
-            <div className="p-4.5 rounded-2xl bg-white/95 border-2 border-emerald-200/80 flex items-center justify-between hover:border-emerald-400 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 border-2 border-blue-300 flex items-center justify-center text-base font-black">
+            <div className="p-3.5 rounded-xl bg-white/95 border border-emerald-200/80 flex items-center justify-between hover:border-emerald-400 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 border border-blue-300 flex items-center justify-center text-xs font-bold">
                   3
                 </div>
                 <div>
-                  <h4 className="text-base sm:text-lg font-black text-slate-900">Mini-Coding Challenge</h4>
-                  <span className="text-sm text-slate-600 font-bold">Build linear regression from scratch</span>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900">Mini-Coding Challenge</h4>
+                  <span className="text-xs text-slate-600 font-medium">Build linear regression from scratch</span>
                 </div>
               </div>
-              <span className="text-base font-bold text-slate-600">40m</span>
+              <span className="text-xs sm:text-sm font-semibold text-slate-600">40m</span>
             </div>
 
             {/* Task 4 */}
-            <div className="p-4.5 rounded-2xl bg-white/95 border-2 border-emerald-200/80 flex items-center justify-between hover:border-emerald-400 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 border-2 border-blue-300 flex items-center justify-center text-base font-black">
+            <div className="p-3.5 rounded-xl bg-white/95 border border-emerald-200/80 flex items-center justify-between hover:border-emerald-400 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 border border-blue-300 flex items-center justify-center text-xs font-bold">
                   4
                 </div>
                 <div>
-                  <h4 className="text-base sm:text-lg font-black text-slate-900">Recall Quiz</h4>
-                  <span className="text-sm text-slate-600 font-bold">5 diagnostic questions to verify retention</span>
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900">Recall Quiz</h4>
+                  <span className="text-xs text-slate-600 font-medium">5 diagnostic questions to verify retention</span>
                 </div>
               </div>
-              <span className="text-base font-bold text-slate-600">20m</span>
+              <span className="text-xs sm:text-sm font-semibold text-slate-600">20m</span>
             </div>
           </div>
 
           <div className="pt-2 flex justify-end">
             <Link
               to="/today-plan"
-              className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-emerald-500 to-blue-600 hover:from-amber-400 hover:to-blue-500 text-white text-base sm:text-lg font-black shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02]"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-emerald-500 to-blue-600 hover:from-amber-400 hover:to-blue-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.01]"
             >
               Continue Plan →
             </Link>
@@ -326,30 +326,30 @@ export const MainDashboard: React.FC = () => {
         </div>
 
         {/* Roadmap Progress Card */}
-        <div className="lg:col-span-4 p-8 sm:p-10 rounded-3xl bg-white/90 backdrop-blur-2xl border-2 border-emerald-400/40 shadow-xl shadow-emerald-500/10 hover:border-emerald-500/60 hover:shadow-2xl transition-all space-y-7 flex flex-col justify-between">
-          <div className="space-y-5">
-            <div className="flex items-center gap-3 border-b-2 border-emerald-200/50 pb-5">
-              <TrendingUp className="w-6 h-6 text-emerald-600 stroke-[2.5]" />
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Roadmap Progress</h2>
+        <div className="lg:col-span-4 p-5 sm:p-6 rounded-2xl bg-white/90 backdrop-blur-2xl border border-emerald-400/40 shadow-lg shadow-emerald-500/5 hover:border-emerald-500/60 transition-all space-y-5 flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 border-b border-emerald-200/50 pb-3">
+              <TrendingUp className="w-5 h-5 text-emerald-600 stroke-[2.5]" />
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900">Roadmap Progress</h2>
             </div>
             
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-50/90 to-blue-50/90 border-2 border-emerald-300/80 space-y-3.5">
+            <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-50/90 to-blue-50/90 border border-emerald-300/80 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-base sm:text-lg font-black text-slate-900">Stage 02 — Learn</span>
-                <span className="text-base sm:text-lg font-black text-emerald-700">60% Complete</span>
+                <span className="text-xs sm:text-sm font-bold text-slate-900">Stage 02 — Learn</span>
+                <span className="text-xs sm:text-sm font-bold text-emerald-700">60% Complete</span>
               </div>
-              <p className="text-sm sm:text-base text-slate-700 font-bold leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
                 Supervised Learning Math & Scikit-Learn Model Selection pipelines.
               </p>
-              <div className="w-full bg-slate-200 h-4 rounded-full overflow-hidden p-0.5 border border-slate-300">
-                <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 h-full rounded-full w-[60%] shadow-md shadow-emerald-500/30" />
+              <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-300">
+                <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 h-full rounded-full w-[60%] shadow-xs" />
               </div>
             </div>
           </div>
 
           <Link
             to="/roadmap"
-            className="text-center w-full py-4 rounded-2xl bg-white hover:bg-emerald-50 border-2 border-emerald-400 text-emerald-800 hover:text-emerald-950 text-base sm:text-lg font-black transition-all shadow-md mt-4 block"
+            className="text-center w-full py-2.5 rounded-xl bg-white hover:bg-emerald-50 border border-emerald-400 text-emerald-800 hover:text-emerald-950 text-xs sm:text-sm font-bold transition-all shadow-xs mt-3 block"
           >
             View Roadmap →
           </Link>
@@ -358,57 +358,57 @@ export const MainDashboard: React.FC = () => {
       </div>
 
       {/* Row 3: Recent Activity (Left) + Career Target (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
         
         {/* Recent Activity Card */}
-        <div className="lg:col-span-8 p-8 sm:p-10 rounded-3xl bg-white/90 backdrop-blur-2xl border-2 border-emerald-400/40 shadow-xl shadow-emerald-500/10 hover:border-emerald-500/60 hover:shadow-2xl transition-all space-y-6">
-          <div className="flex items-center gap-3 border-b-2 border-emerald-200/50 pb-5">
-            <Activity className="w-6 h-6 text-blue-600 stroke-[2.5]" />
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Recent Activity</h2>
+        <div className="lg:col-span-8 p-5 sm:p-6 rounded-2xl bg-white/90 backdrop-blur-2xl border border-emerald-400/40 shadow-lg shadow-emerald-500/5 hover:border-emerald-500/60 transition-all space-y-4">
+          <div className="flex items-center gap-2 border-b border-emerald-200/50 pb-3">
+            <Activity className="w-5 h-5 text-blue-600 stroke-[2.5]" />
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900">Recent Activity</h2>
           </div>
           
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4.5 rounded-2xl bg-white/95 border-2 border-emerald-200">
-              <div className="flex items-center gap-4">
-                <div className="w-4 h-4 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500" />
-                <span className="text-base sm:text-lg font-bold text-slate-900">Completed quiz on Python Functions & AsyncIO</span>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3.5 rounded-xl bg-white/95 border border-emerald-200">
+              <div className="flex items-center gap-3">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-xs" />
+                <span className="text-xs sm:text-sm font-semibold text-slate-900">Completed quiz on Python Functions & AsyncIO</span>
               </div>
-              <span className="text-sm font-bold text-slate-500">2h ago</span>
+              <span className="text-xs font-semibold text-slate-500">2h ago</span>
             </div>
 
-            <div className="flex items-center justify-between p-4.5 rounded-2xl bg-white/95 border-2 border-blue-200">
-              <div className="flex items-center gap-4">
-                <div className="w-4 h-4 rounded-full bg-blue-600 shadow-sm shadow-blue-600" />
-                <span className="text-base sm:text-lg font-bold text-slate-900">AI Mentor session on Vector Embeddings</span>
+            <div className="flex items-center justify-between p-3.5 rounded-xl bg-white/95 border border-blue-200">
+              <div className="flex items-center gap-3">
+                <div className="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-xs" />
+                <span className="text-xs sm:text-sm font-semibold text-slate-900">AI Mentor session on Vector Embeddings</span>
               </div>
-              <span className="text-sm font-bold text-slate-500">5h ago</span>
+              <span className="text-xs font-semibold text-slate-500">5h ago</span>
             </div>
           </div>
         </div>
 
         {/* Career Target Card */}
-        <div className="lg:col-span-4 p-8 sm:p-10 rounded-3xl bg-white/90 backdrop-blur-2xl border-2 border-emerald-400/40 shadow-xl shadow-emerald-500/10 hover:border-emerald-500/60 hover:shadow-2xl transition-all space-y-6 flex flex-col justify-between">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b-2 border-emerald-200/50 pb-5">
-              <div className="flex items-center gap-3">
-                <Briefcase className="w-6 h-6 text-emerald-600 stroke-[2.5]" />
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Career Target</h2>
+        <div className="lg:col-span-4 p-5 sm:p-6 rounded-2xl bg-white/90 backdrop-blur-2xl border border-emerald-400/40 shadow-lg shadow-emerald-500/5 hover:border-emerald-500/60 transition-all space-y-4 flex flex-col justify-between">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between border-b border-emerald-200/50 pb-3">
+              <div className="flex items-center gap-2">
+                <Briefcase className="w-5 h-5 text-emerald-600 stroke-[2.5]" />
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900">Career Target</h2>
               </div>
-              <span className="text-sm font-black text-blue-600 hover:text-blue-800 cursor-pointer">Edit</span>
+              <span className="text-xs font-bold text-blue-600 hover:text-blue-800 cursor-pointer">Edit</span>
             </div>
             <div>
-              <span className="text-xl sm:text-2xl font-black text-slate-900">AI/ML Engineer</span>
-              <p className="text-sm font-extrabold text-emerald-700 mt-1">Target Role in High Demand</p>
+              <span className="text-base sm:text-lg font-bold text-slate-900">AI/ML Engineer</span>
+              <p className="text-xs font-bold text-emerald-700 mt-0.5">Target Role in High Demand</p>
             </div>
-            <div className="pt-2">
-              <span className="text-xs sm:text-sm text-slate-500 font-extrabold uppercase tracking-wider block">Next Milestone</span>
-              <span className="text-base sm:text-lg font-black text-slate-900">Build Distributed ML Pipeline</span>
+            <div className="pt-1">
+              <span className="text-xs text-slate-500 font-bold uppercase tracking-wider block">Next Milestone</span>
+              <span className="text-xs sm:text-sm font-semibold text-slate-900">Build Distributed ML Pipeline</span>
             </div>
           </div>
 
           <Link
             to="/career"
-            className="text-center w-full py-4 rounded-2xl bg-white hover:bg-emerald-50 border-2 border-emerald-400 text-emerald-800 hover:text-emerald-950 text-base sm:text-lg font-black transition-all shadow-md mt-4 block"
+            className="text-center w-full py-2.5 rounded-xl bg-white hover:bg-emerald-50 border border-emerald-400 text-emerald-800 hover:text-emerald-950 text-xs sm:text-sm font-bold transition-all shadow-xs mt-3 block"
           >
             Career Intelligence →
           </Link>

@@ -75,64 +75,64 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, onTriggerSplash,
 
       {/* Main Workspace Area */}
       <div className="flex-1 flex flex-col min-w-0 min-h-screen justify-between bg-transparent">
-        {/* Top Header Bar in Frosted Glass with YGB theme */}
-        <header className="sticky top-0 z-20 h-22 bg-white/80 backdrop-blur-2xl border-b-2 border-emerald-400/30 px-7 sm:px-10 flex items-center justify-between shadow-sm">
+        {/* Top Header Bar */}
+        <header className="sticky top-0 z-20 h-16 bg-white/85 backdrop-blur-xl border-b border-emerald-200/50 px-5 sm:px-7 flex items-center justify-between shadow-2xs">
           {/* Search Bar */}
-          <div className="relative w-88 sm:w-[440px] md:w-[500px]">
-            <Search className="w-6 h-6 text-emerald-600 absolute left-4.5 top-1/2 -translate-y-1/2 pointer-events-none stroke-[2.5]" />
+          <div className="relative w-64 sm:w-80 md:w-96">
+            <Search className="w-4 h-4 text-emerald-600 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none stroke-[2]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search concepts, skills, roadmaps, code..."
-              className="w-full pl-14 pr-5 py-3 rounded-2xl bg-white/95 border-2 border-emerald-400/40 text-base sm:text-lg font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/25 transition-all shadow-sm"
+              className="w-full pl-9 pr-4 py-2 rounded-xl bg-white/95 border border-emerald-300/60 text-xs sm:text-sm font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-500/25 transition-all shadow-2xs"
             />
           </div>
 
           {/* Right Header Icons & User Profile Avatar */}
-          <div className="flex items-center space-x-5">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             <button
               aria-label="Notifications"
-              className="p-3 rounded-2xl bg-white/90 hover:bg-amber-50 border-2 border-amber-300/60 text-amber-700 transition-colors relative shadow-xs"
+              className="p-2 rounded-xl bg-white/90 hover:bg-amber-50 border border-amber-300/60 text-amber-700 transition-colors relative shadow-2xs"
             >
-              <Bell className="w-6 h-6 stroke-[2.2]" />
-              <span className="w-3 h-3 rounded-full bg-amber-500 absolute top-2 right-2 ring-2 ring-white animate-pulse" />
+              <Bell className="w-4 h-4 stroke-[2]" />
+              <span className="w-2 h-2 rounded-full bg-amber-500 absolute top-1.5 right-1.5 ring-1 ring-white animate-pulse" />
             </button>
 
             <button
               aria-label="Security Status"
-              className="p-3 rounded-2xl bg-white/90 hover:bg-emerald-50 border-2 border-emerald-300/60 text-emerald-700 transition-colors shadow-xs"
+              className="p-2 rounded-xl bg-white/90 hover:bg-emerald-50 border border-emerald-300/60 text-emerald-700 transition-colors shadow-2xs"
             >
-              <Shield className="w-6 h-6 stroke-[2.2]" />
+              <Shield className="w-4 h-4 stroke-[2]" />
             </button>
 
             {/* Profile Avatar & Info */}
-            <div className="flex items-center space-x-4 pl-4 border-l-2 border-emerald-300/50">
-              <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-blue-600 text-white font-black text-lg flex items-center justify-center shadow-md ring-2 ring-emerald-400/60">
+            <div className="flex items-center space-x-2.5 pl-3 border-l border-emerald-200">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs ring-1 ring-emerald-400/60">
                 B
               </div>
               <div className="hidden sm:flex flex-col text-left">
-                <span className="text-base sm:text-lg font-black text-slate-900 leading-tight">Buddy</span>
-                <span className="text-xs sm:text-sm font-black text-emerald-700 leading-tight">AI/ML Engineer</span>
+                <span className="text-xs font-black text-slate-900 leading-tight">Buddy</span>
+                <span className="text-[10px] font-bold text-emerald-700 leading-tight">AI/ML Engineer</span>
               </div>
             </div>
           </div>
         </header>
 
         {/* Page Content Container */}
-        <main className="flex-1 p-7 sm:p-9 lg:p-12 max-w-[1800px] w-full mx-auto">{children}</main>
+        <main className="flex-1 p-4 sm:p-5 lg:p-6 max-w-[1600px] w-full mx-auto">{children}</main>
 
         <Footer />
       </div>
 
-      {/* Floating Ask Mentor Co-pilot with Yellow+Green+Blue Glow */}
-      <div className="fixed bottom-8 right-8 z-50 select-none">
+      {/* Floating Ask Mentor Co-pilot */}
+      <div className="fixed bottom-6 right-6 z-50 select-none">
         {!isCopilotOpen ? (
           <button
             onClick={() => setIsCopilotOpen(true)}
-            className="px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-emerald-500 to-blue-600 hover:from-amber-400 hover:to-blue-500 text-white font-sans font-black text-base sm:text-lg flex items-center space-x-3 shadow-2xl shadow-emerald-600/35 hover:scale-105 transition-all ring-2 ring-white/60"
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-emerald-500 to-blue-600 hover:from-amber-400 hover:to-blue-500 text-white font-sans font-bold text-xs sm:text-sm flex items-center space-x-2 shadow-xl shadow-emerald-600/30 hover:scale-105 transition-all ring-1 ring-white/60"
           >
-            <Sparkles className="w-6 h-6 text-yellow-200 animate-spin stroke-[2.5]" style={{ animationDuration: '6s' }} />
+            <Sparkles className="w-4 h-4 text-yellow-200 animate-spin stroke-[2]" style={{ animationDuration: '6s' }} />
             <span>AI Mentor</span>
           </button>
         ) : (

@@ -57,19 +57,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`sticky top-0 h-screen flex flex-col justify-between bg-white/85 backdrop-blur-2xl border-r-2 border-emerald-400/30 text-slate-800 transition-all duration-300 z-30 select-none shadow-2xl shrink-0 ${
-        collapsed ? 'w-28' : 'w-[420px] lg:w-[450px] xl:w-[480px]'
-      }`}
+      className={`sticky top-0 h-screen flex flex-col justify-between bg-white/90 backdrop-blur-2xl border-r border-emerald-400/30 text-slate-800 transition-all duration-300 z-30 select-none shadow-lg shrink-0 ${collapsed ? 'w-14' : 'w-48 lg:w-52'
+        }`}
     >
       <div>
         {/* Brand Logo Header */}
-        <div className="flex items-center justify-between h-24 px-7 border-b-2 border-emerald-300/40 bg-white/40">
-          <Link to="/" className="flex items-center space-x-4 group overflow-hidden">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-blue-600 flex items-center justify-center text-white shrink-0 shadow-xl shadow-emerald-500/30 group-hover:scale-105 transition-transform ring-2 ring-emerald-400/60">
-              <Sprout className="w-8 h-8 stroke-[2.8]" />
+        <div className="flex items-center justify-between h-14 px-3 border-b border-emerald-200/50 bg-white/50">
+          <Link to="/" className="flex items-center space-x-2 group overflow-hidden">
+            <div className="w-4 h-6 rounded-sm bg-gradient-to-tr from-amber-400 via-emerald-500 to-blue-600 flex items-center justify-center text-white shrink-0 shadow-sm shadow-emerald-500/25 group-hover:scale-105 transition-transform ring-1 ring-emerald-400/60">
+              <Sprout className="w-4.5 h-4.5 stroke-[2.5]" />
             </div>
             {!collapsed && (
-              <span className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 font-sans truncate">
+              <span className="text-base font-black tracking-tight text-slate-900 font-sans truncate">
                 GrowSkill <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">AI</span>
               </span>
             )}
@@ -78,14 +77,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button
             onClick={onToggleCollapse}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            className="p-3 rounded-2xl text-slate-500 hover:text-emerald-700 hover:bg-emerald-100/60 transition-colors border border-transparent hover:border-emerald-300"
+            className="p-1 rounded-lg text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 transition-colors border border-transparent hover:border-emerald-200"
           >
-            {collapsed ? <ChevronRight className="w-7 h-7 stroke-[2.8]" /> : <ChevronLeft className="w-7 h-7 stroke-[2.8]" />}
+            {collapsed ? <ChevronRight className="w-4.5 h-4.5 stroke-[2.2]" /> : <ChevronLeft className="w-4.5 h-4.5 stroke-[2.2]" />}
           </button>
         </div>
 
         {/* Navigation Items */}
-        <nav className="p-4 sm:p-5 space-y-2.5 overflow-y-auto max-h-[calc(100vh-230px)] custom-scrollbar">
+        <nav className="p-2 space-y-0.5 overflow-y-auto max-h-[calc(100vh-130px)] custom-scrollbar">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive =
@@ -99,13 +98,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 key={item.path}
                 to={item.path}
                 title={collapsed ? item.label : undefined}
-                className={`flex items-center space-x-4.5 px-5 py-4 rounded-2xl text-lg sm:text-xl font-black transition-all duration-200 ${
-                  isActive
-                    ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 text-white shadow-xl shadow-emerald-600/35 ring-2 ring-emerald-400/60 scale-[1.02]'
-                    : 'text-slate-800 hover:text-slate-950 hover:bg-emerald-100/60 hover:translate-x-2'
-                }`}
+                className={`flex items-center space-x-2.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 ${isActive
+                    ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 text-white shadow-sm shadow-emerald-600/30 ring-1 ring-emerald-400/50 font-extrabold'
+                    : 'text-slate-700 hover:text-slate-950 hover:bg-emerald-50 hover:translate-x-0.5'
+                  }`}
               >
-                <Icon className={`w-7 h-7 shrink-0 transition-colors stroke-[2.5] ${isActive ? 'text-white' : 'text-emerald-600'}`} />
+                <Icon className={`w-4 h-4 shrink-0 transition-colors stroke-[2.2] ${isActive ? 'text-white' : 'text-emerald-600'}`} />
                 {!collapsed && <span className="truncate tracking-tight">{item.label}</span>}
               </Link>
             );
@@ -113,17 +111,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </nav>
       </div>
 
-      {/* Bottom Section: Beta User Badge in Yellow-Green-Blue Theme */}
+      {/* Bottom Section: Beta User Badge */}
       {!collapsed && (
-        <div className="p-5 border-t-2 border-emerald-300/40">
-          <div className="p-5 rounded-2xl bg-gradient-to-br from-amber-100/95 via-emerald-100/80 to-blue-100/95 border-2 border-emerald-400/50 text-slate-900 space-y-2 shadow-lg">
+        <div className="p-2.5 border-t border-emerald-200/50">
+          <div className="p-2 rounded-lg bg-gradient-to-br from-amber-50/95 via-emerald-50/80 to-blue-50/95 border border-emerald-300/60 text-slate-900 space-y-0.5 shadow-2xs">
             <div className="flex items-center justify-between">
-              <span className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Beta Member</span>
-              <span className="text-amber-700 bg-amber-200/90 border border-amber-400 px-2.5 py-0.5 rounded-xl text-sm font-black flex items-center gap-1 shadow-xs">
+              <span className="text-[11px] font-black text-slate-900 tracking-tight">Beta Member</span>
+              <span className="text-amber-800 bg-amber-200/90 border border-amber-300 px-1.5 py-0.5 rounded text-[9px] font-black flex items-center gap-0.5">
                 ✨ PRO
               </span>
             </div>
-            <p className="text-sm sm:text-base text-emerald-900 font-extrabold">Personalized AI Mentor Active</p>
+            <p className="text-[10px] text-emerald-800 font-semibold truncate">AI Mentor Active</p>
           </div>
         </div>
       )}
