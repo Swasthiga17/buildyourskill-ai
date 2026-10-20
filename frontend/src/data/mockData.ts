@@ -1,7 +1,7 @@
 import { SkillNode, UserTwinProfile, RoadmapPhase, DailyPlan, ProjectBlueprint, MockQuestion } from '../types';
 
 export const initialProfile: UserTwinProfile = {
-  name: 'Alex Rivera',
+  name: 'Buddy',
   role: 'Full Stack Engineer',
   targetRole: 'Generative AI / ML Engineer',
   knowledgeScore: 72,

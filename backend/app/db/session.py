@@ -56,6 +56,8 @@ async def init_db():
             await conn.execute(text("ALTER TABLE feedback ADD COLUMN entity_id VARCHAR(100)"))
             await conn.execute(text("ALTER TABLE feedback ADD COLUMN sentiment VARCHAR(20) DEFAULT 'positive'"))
             await conn.execute(text("ALTER TABLE feedback ADD COLUMN feedback_text TEXT"))
+        except Exception:
+            pass
         try:
             from sqlalchemy import text
             await conn.execute(text("ALTER TABLE feedback ADD COLUMN quality_category VARCHAR(50) DEFAULT 'accuracy'"))

@@ -1,4 +1,5 @@
-const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:8000';
+const envApiUrl = (import.meta as any).env?.VITE_API_BASE_URL;
+const API_BASE_URL = envApiUrl !== undefined ? envApiUrl : (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:8000' : '');
 
 export interface UserTwinProfile {
   name: string;

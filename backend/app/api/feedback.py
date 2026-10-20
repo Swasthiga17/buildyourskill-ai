@@ -30,9 +30,9 @@ class FeedbackResponse(BaseModel):
     feature: str
     entity_id: Optional[str] = None
     rating: int
-    sentiment: str
-    quality_category: str
-    correctness: str
+    sentiment: str = "neutral"
+    quality_category: Optional[str] = "accuracy"
+    correctness: Optional[str] = "correct"
     feedback_text: str
     created_at: datetime
 
@@ -120,7 +120,9 @@ async def get_my_feedback(
             feature=f.feature,
             entity_id=f.entity_id,
             rating=f.rating,
-            sentiment=f.sentiment,
+            sentiment=f.sentiment or "neutral",
+            quality_category=getattr(f, "quality_category", "accuracy") or "accuracy",
+            correctness=getattr(f, "correctness", "correct") or "correct",
             feedback_text=f.feedback_text,
             created_at=f.created_at
         )

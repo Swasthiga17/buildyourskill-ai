@@ -2,18 +2,20 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root {
-  --bg-yellow-green-blue: linear-gradient(135deg, #FEF08A 0%, #A7F3D0 45%, #60A5FA 100%);
-  --yellow-accent: #F59E0B;
-  --emerald-primary: #10B981;
-  --blue-secondary: #2563EB;
-  --border-emerald: rgba(16, 185, 129, 0.3);
+  --font-base: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --bg-yellow: #FEF08A;
+  --bg-green: #A7F3D0;
+  --bg-blue: #60A5FA;
+  --accent-yellow: #F59E0B;
+  --accent-green: #10B981;
+  --accent-blue: #2563EB;
 }
 
 html {
-  font-size: 16px;
+  font-size: 19.5px;
 }
 
 body {
@@ -22,61 +24,64 @@ body {
   background: linear-gradient(135deg, #FEF08A 0%, #A7F3D0 45%, #60A5FA 100%);
   background-attachment: fixed;
   color: #0F172A;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-base);
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Yellow + Green + Blue Theme Glass Panels */
-.glass-panel {
+/* Yellow + Green + Blue Frosted Glass Panels */
+.glass-panel-ygb {
   background: rgba(255, 255, 255, 0.90);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.12);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(16, 185, 129, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.18), 0 4px 20px rgba(37, 99, 235, 0.08);
 }
 
-.glass-panel-glow {
-  background: radial-gradient(circle at top left, rgba(254, 240, 138, 0.6), transparent 60%), rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(24px);
-  border: 1.5px solid rgba(16, 185, 129, 0.4);
-  box-shadow: 0 12px 35px rgba(16, 185, 129, 0.18);
+.glass-panel-ygb:hover {
+  border-color: rgba(16, 185, 129, 0.55);
+  box-shadow: 0 14px 35px -8px rgba(16, 185, 129, 0.25), 0 6px 24px rgba(37, 99, 235, 0.12);
 }
 
-.text-gradient-emerald {
-  background: linear-gradient(135deg, #D97706 0%, #059669 50%, #2563EB 100%);
+/* Gradient Text Utilities */
+.text-gradient-ygb {
+  background: linear-gradient(135deg, #D97706 0%, #059669 45%, #2563EB 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.btn-emerald-glow {
+.text-gradient-green-blue {
+  background: linear-gradient(135deg, #059669 0%, #2563EB 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Yellow + Green + Blue Signature Button */
+.btn-ygb-glow {
   background: linear-gradient(135deg, #F59E0B 0%, #10B981 50%, #2563EB 100%);
   color: #FFFFFF;
   font-weight: 800;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 22px rgba(16, 185, 129, 0.35);
 }
-
-.btn-emerald-glow:hover {
-  box-shadow: 0 6px 30px rgba(16, 185, 129, 0.55);
+.btn-ygb-glow:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.55);
 }
 
-.emerald-glow-box {
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
-}
-
-/* Custom scrollbars */
+/* Custom Scrollbars in Theme */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #FEF08A;
+  background: rgba(254, 240, 138, 0.4);
 }
 ::-webkit-scrollbar-thumb {
   background: #A7F3D0;
-  border-radius: 4px;
+  border-radius: 6px;
+  border: 2px solid rgba(254, 240, 138, 0.5);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #10B981;

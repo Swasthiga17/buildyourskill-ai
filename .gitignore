@@ -36,3 +36,5 @@ venv.bak/
 
 # Temporary files
 test_check.txt
+*.log
+tests_e2e/screenshots/

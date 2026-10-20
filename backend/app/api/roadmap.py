@@ -10,6 +10,8 @@ from app.schemas.schemas import RoadmapResponse, PersonalizeRoadmapRequest
 
 from app.services.telemetry import telemetry_service
 
+router = APIRouter(prefix="/api/roadmap", tags=["roadmap"])
+
 @router.get("/", response_model=RoadmapResponse)
 async def get_roadmap(
     current_user: User = Depends(get_current_user),

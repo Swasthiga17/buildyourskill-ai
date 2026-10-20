@@ -8,6 +8,8 @@ from app.services.today_plan import today_plan_service
 
 from app.services.telemetry import telemetry_service
 
+router = APIRouter(prefix="/api/today-plan", tags=["today-plan"])
+
 @router.get("/")
 async def get_today_plan(
     current_user: User = Depends(get_current_user),
